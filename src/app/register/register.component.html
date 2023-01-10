@@ -1,5 +1,5 @@
 
-<h1 class="title">Login</h1>
+<h1 class="title">Register</h1>
 <form class="form" (ngSubmit)="onSubmit()">
   <div class="input-container">
     <input
@@ -16,9 +16,9 @@
     />
   </div>
 
-  <button type="submit" class="btn-sub">ავტორიზაცია</button>
+  <button type="submit" class="btn-sub">რეგისტრაცია</button>
 </form>
 
-<h1 class="er-msg" [ngClass]="message === 'success' ? 'green' : 'red'">
+<h1 class="er-msg" [ngClass]="message === 'created' ? 'green' : 'red'">
   {{ message }}
 </h1>

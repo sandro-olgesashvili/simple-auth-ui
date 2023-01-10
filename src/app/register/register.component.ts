@@ -3,11 +3,11 @@ import { Authobj } from '../interface/authobj';
 import { AuthService } from '../service/auth.service';
 
 @Component({
-  selector: 'app-authorization',
-  templateUrl: './authorization.component.html',
-  styleUrls: ['./authorization.component.css'],
+  selector: 'app-register',
+  templateUrl: './register.component.html',
+  styleUrls: ['./register.component.css'],
 })
-export class AuthorizationComponent implements OnInit {
+export class RegisterComponent implements OnInit {
   username: string = '';
   password: string = '';
   message: string = '';
@@ -27,10 +27,10 @@ export class AuthorizationComponent implements OnInit {
       password: this.password,
     };
 
-    this.authService.sendReq(data).subscribe((x) => {
+    this.authService.sendReg(data).subscribe((x) => {
       x
-        ? (this.message = 'success')
-        : (this.message = 'wrong username or password');
+        ? (this.message = 'created')
+        : (this.message = 'account already exists');
     });
 
     setTimeout(() => {
