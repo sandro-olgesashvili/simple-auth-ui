@@ -7,12 +7,14 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { AuthorizationComponent } from './authorization/authorization.component';
 import { RegisterComponent } from './register/register.component';
+import { UpdateComponent } from './update/update.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     AuthorizationComponent,
     RegisterComponent,
+    UpdateComponent,
   ],
   imports: [
     BrowserModule,

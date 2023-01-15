@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { catchError, Observable } from 'rxjs';
 import { Authobj } from '../interface/authobj';
+import { Update } from '../interface/update';
 
 @Injectable({
   providedIn: 'root',
@@ -22,5 +23,8 @@ export class AuthService {
 
   sendReg(data: Authobj): Observable<any> {
     return this.http.post(this.urlReg, data, { headers: this.httpHeader });
+  }
+  update(data: Update): Observable<any> {
+    return this.http.put(this.url, data, { headers: this.httpHeader });
   }
 }

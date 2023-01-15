@@ -1,0 +1,29 @@
+<h1 class="title">Update</h1>
+<form class="form" (ngSubmit)="onSubmit()">
+  <div class="input-container">
+    <input
+      type="text"
+      name="username"
+      placeholder="მომხმარებელი ან საიდენტიფიკაციო კოდი"
+      [(ngModel)]="username"
+    />
+    <input
+      type="password"
+      name="password"
+      placeholder="ძველი პაროლი"
+      [(ngModel)]="password"
+    />
+    <input
+      type="password"
+      name="newPassword"
+      placeholder="ახალი პაროლი"
+      [(ngModel)]="newPassword"
+    />
+  </div>
+
+  <button type="submit" class="btn-sub">განახლება</button>
+</form>
+
+<h1 class="er-msg" [ngClass]="message === 'updated' ? 'green' : 'red'">
+  {{ message }}
+</h1>
