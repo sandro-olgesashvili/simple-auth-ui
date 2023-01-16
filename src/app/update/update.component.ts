@@ -18,7 +18,7 @@ export class UpdateComponent implements OnInit {
   ngOnInit(): void {}
 
   onSubmit() {
-    if (!this.username.trim() || !this.password.trim()) {
+    if (!this.username.trim() || !this.password.trim() || !this.newPassword.trim()) {
       alert('please add all field');
       return;
     }
