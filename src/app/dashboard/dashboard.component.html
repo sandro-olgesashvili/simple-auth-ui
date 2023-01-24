@@ -1,0 +1,48 @@
+<div class="container">
+  <div class="product-item-container">
+    <div class="prduct-item-label">
+      <div>სახელი</div>
+      <div>რაოდენობა</div>
+      <div>ფასი</div>
+    </div>
+    <div *ngFor="let item of prodArr" class="prduct-item">
+      <div>{{ item.productName }}</div>
+      <div>{{ item.quantity }}</div>
+      <div>{{ item.price }} $</div>
+      <img src="../../assets/images/Vectorblue.png" alt="s" (click)="addProduct(item)" />
+    </div>
+  </div>
+  <div class="product-card">
+    <div class="title">
+      <img src="../../assets/images/Vectorgreen.png" alt="s" />
+      <h2>ჩემი კალათა</h2>
+    </div>
+    <div class="product-card-info-container">
+      <div *ngFor="let item of cartProd" class="product-card-info">
+        <div class="close" (click)="remove(item.id)">X</div>
+        <div class="product-card-label">
+          <div>პროდუქტის დასახელება</div>
+          <div>რაოდენობა</div>
+          <div>ფასი</div>
+          <div>ჯამი</div>
+        </div>
+        <div class="product-card-item">
+          <div>{{ item.productName }}</div>
+          <div class="product-card-item-count">
+            <button
+              [disabled]="item.quantity == 1"
+              (click)="subtract(item.productName)"
+            >
+              -
+            </button>
+            <span>{{ item.quantity }}</span>
+            <button (click)="plus(item.productName)">+</button>
+          </div>
+          <div>{{ item.price }} $</div>
+          <div>{{ item.price * item.quantity }}$</div>
+        </div>
+      </div>
+      <h2 class="warng-msg">{{message}}</h2>
+    </div>
+  </div>
+</div>

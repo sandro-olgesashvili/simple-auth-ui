@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { Authobj } from '../interface/authobj';
 import { AuthService } from '../service/auth.service';
+import { UiService } from '../service/ui.service';
 
 @Component({
   selector: 'app-authorization',
@@ -12,13 +14,21 @@ export class AuthorizationComponent implements OnInit {
   password: string = '';
   message: string = '';
 
-  constructor(private authService: AuthService) {}
+  constructor(private authService: AuthService, private router: Router, private uiService:UiService) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    const user = JSON.parse(localStorage.getItem("user") || "");
+
+    this.uiService.sendMess('');
+
+    if(user) {
+      this.router.navigate(['/', 'dashboard'])
+    }
+  }
 
   onSubmit() {
     if (!this.username.trim() || !this.password.trim()) {
-      alert('please add all field');
+      this.message= "შეავსეთ ყველა ველი"
       return;
     }
 
@@ -27,10 +37,15 @@ export class AuthorizationComponent implements OnInit {
       password: this.password,
     };
 
-    this.authService.sendReq(data).subscribe((x) => {
-      x
-        ? (this.message = 'success')
-        : (this.message = 'wrong username or password');
+    this.authService.reqLogin(data).subscribe(x => {
+      if(x === false) {
+        this.message = "არასწორია ელ-ფოსტა ან პაროლი"
+        return;
+      }
+      localStorage.setItem("user", JSON.stringify(x));
+
+      this.router.navigate(['/', 'dashboard'])
+
     });
 
     setTimeout(() => {

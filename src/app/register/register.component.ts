@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { Authobj } from '../interface/authobj';
 import { AuthService } from '../service/auth.service';
 
@@ -12,13 +13,19 @@ export class RegisterComponent implements OnInit {
   password: string = '';
   message: string = '';
 
-  constructor(private authService: AuthService) {}
+  constructor(private authService: AuthService, private router: Router) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    const user = JSON.parse(localStorage.getItem('user') || '')
+
+    if(user) {
+      this.router.navigate(['/', 'dashboard'])
+    }
+  }
 
   onSubmit() {
     if (!this.username.trim() || !this.password.trim()) {
-      alert('please add all field');
+      this.message = "შეავსეთ ყველა ველი"
       return;
     }
 
@@ -27,10 +34,8 @@ export class RegisterComponent implements OnInit {
       password: this.password,
     };
 
-    this.authService.sendReg(data).subscribe((x) => {
-      x
-        ? (this.message = 'created')
-        : (this.message = 'account already exists');
+    this.authService.reqRegister(data).subscribe((x) => {
+      x ? this.message = "შექმნილია" : this.message = "მომხმარებელი უკვე არსებობს"
     });
 
     setTimeout(() => {

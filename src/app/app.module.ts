@@ -8,6 +8,8 @@ import { AppComponent } from './app.component';
 import { AuthorizationComponent } from './authorization/authorization.component';
 import { RegisterComponent } from './register/register.component';
 import { UpdateComponent } from './update/update.component';
+import { DashboardComponent } from './dashboard/dashboard.component';
+import { HeaderComponent } from './header/header.component';
 
 @NgModule({
   declarations: [
@@ -15,6 +17,8 @@ import { UpdateComponent } from './update/update.component';
     AuthorizationComponent,
     RegisterComponent,
     UpdateComponent,
+    DashboardComponent,
+    HeaderComponent,
   ],
   imports: [
     BrowserModule,

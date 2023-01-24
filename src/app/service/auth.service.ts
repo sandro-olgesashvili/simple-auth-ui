@@ -1,15 +1,20 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { catchError, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 import { Authobj } from '../interface/authobj';
-import { Update } from '../interface/update';
+import { AddProduct } from '../interface/add-product';
+import { UserProd } from '../interface/user-prod';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  private url = 'https://localhost:7102/api/auth';
+  private urlLogin = 'https://localhost:7102/api/auth';
   private urlReg = 'https://localhost:7102/api/auth/register';
+
+  private urlProd = 'https://localhost:7102/api/auth/products?';
+  private addProdUrl = 'https://localhost:7102/api/auth/product';
+  private deleteUrl = 'https://localhost:7102/api/auth/products?';
 
   httpHeader = new HttpHeaders({
     'Content-Type': 'application/json',
@@ -17,14 +22,26 @@ export class AuthService {
 
   constructor(private http: HttpClient) {}
 
-  sendReq(data: Authobj): Observable<any> {
-    return this.http.post(this.url, data, { headers: this.httpHeader });
+  reqLogin(data: Authobj): Observable<any> {
+    return this.http.post(this.urlLogin, data, { headers: this.httpHeader });
   }
 
-  sendReg(data: Authobj): Observable<any> {
+  reqRegister(data: Authobj): Observable<any> {
     return this.http.post(this.urlReg, data, { headers: this.httpHeader });
   }
-  update(data: Update): Observable<any> {
-    return this.http.put(this.url, data, { headers: this.httpHeader });
+  update(data: Authobj): Observable<any> {
+    return this.http.put(this.urlLogin, data, { headers: this.httpHeader });
+  }
+  getProd(num: string): Observable<any> {
+    return this.http.get(`${this.urlProd}Id=${num}`);
+  }
+  addProd(data: AddProduct): Observable<any> {
+    return this.http.post(this.addProdUrl, data, { headers: this.httpHeader });
+  }
+  deleteProd(data: UserProd): Observable<any> {
+    return this.http.delete(
+      `${this.deleteUrl}UserId=${data.userId}&ProductId=${data.productId}`,
+      { headers: this.httpHeader }
+    );
   }
 }
