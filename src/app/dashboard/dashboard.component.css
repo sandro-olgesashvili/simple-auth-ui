@@ -154,7 +154,7 @@
   text-transform: capitalize;
 }
 .product-card-item div:nth-child(2) {
-  max-width: 68px;
+  width: 65px;
   text-align: center;
 }
 
@@ -164,7 +164,7 @@
 
 .product-card-item-count {
   display: flex;
-  gap: 10px;
+  gap: 5px;
   align-items: center;
 }
 
