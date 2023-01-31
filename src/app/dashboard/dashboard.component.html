@@ -80,8 +80,9 @@
           <div>{{ item.price * item.quantity }}$</div>
         </div>
       </div>
-      <div class="save-cont">
+      <div class="save-cont" *ngIf="cartProd.length > 0">
         <button class="product-btn" (click)="updateSave()">შენახვა</button>
+        <h2 class="succ-msg">{{updatemsg}}</h2>
       </div>
       <h2 class="warng-msg">{{ message }}</h2>
     </div>

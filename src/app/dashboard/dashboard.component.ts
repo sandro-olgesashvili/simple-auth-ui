@@ -28,6 +28,7 @@ export class DashboardComponent implements OnInit {
 
   message: string = '';
   messageAdd: string = '';
+  updatemsg: string = ''
 
   role = JSON.parse(localStorage.getItem('user') || '').role;
 
@@ -157,6 +158,12 @@ export class DashboardComponent implements OnInit {
   }
 
   updateSave() {
-    this.authService.updateSave(this.cartProd).subscribe(() => {})
+    this.authService.updateSave(this.cartProd).subscribe(() => {
+      this.updatemsg = 'განახლებულია'
+    })
+
+    setTimeout(() => {
+      this.updatemsg = ''
+    }, 2000);
   }
 }

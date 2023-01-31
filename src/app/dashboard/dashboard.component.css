@@ -253,3 +253,8 @@ input::-webkit-inner-spin-button {
   margin-top: 50px;
   text-align: center;
 }
+
+.succ-msg {
+  color: green;
+  margin-top: 20px;
+}
