@@ -2,8 +2,10 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Authobj } from '../interface/authobj';
+
+import { OrderAdd } from '../interface/order-add';
 import { AddProduct } from '../interface/add-product';
-import { UserProd } from '../interface/user-prod';
+import { ProductMain } from '../interface/product';
 
 @Injectable({
   providedIn: 'root',
@@ -12,9 +14,16 @@ export class AuthService {
   private urlLogin = 'https://localhost:7102/api/auth';
   private urlReg = 'https://localhost:7102/api/auth/register';
 
-  private urlProd = 'https://localhost:7102/api/auth/products?';
-  private addProdUrl = 'https://localhost:7102/api/auth/product';
-  private deleteUrl = 'https://localhost:7102/api/auth/products?';
+  private getProductUrl = 'https://localhost:7102/api/auth/products';
+
+  private addProductUrl = "https://localhost:7102/api/auth/product"
+
+  private getORderUrl = 'https://localhost:7102/api/auth/orders';
+  private orderDelUrl = 'https://localhost:7102/api/auth/orders?ProductName='
+
+  private deleteProductUrl = 'https://localhost:7102/api/auth/products?ProductName=';
+
+  private saveChange = 'https://localhost:7102/api/auth/save';
 
   httpHeader = new HttpHeaders({
     'Content-Type': 'application/json',
@@ -32,16 +41,65 @@ export class AuthService {
   update(data: Authobj): Observable<any> {
     return this.http.put(this.urlLogin, data, { headers: this.httpHeader });
   }
-  getProd(num: string): Observable<any> {
-    return this.http.get(`${this.urlProd}Id=${num}`);
+  getProd(): Observable<any> {
+    let httpHeaderAuth = new HttpHeaders({
+      'Content-Type': 'application/json',
+      "Authorization":'Bearer ' + JSON.parse(localStorage.getItem('user') || '').token,
+    });
+
+    return this.http.get(this.getProductUrl, { headers: httpHeaderAuth });
   }
-  addProd(data: AddProduct): Observable<any> {
-    return this.http.post(this.addProdUrl, data, { headers: this.httpHeader });
+
+  getOrders(): Observable<any> {
+    let httpHeaderAuth = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization':'Bearer ' + JSON.parse(localStorage.getItem('user') || '').token,
+    });
+    return this.http.get(this.getORderUrl,{headers: httpHeaderAuth})
   }
-  deleteProd(data: UserProd): Observable<any> {
+  
+  addOrder(data: OrderAdd): Observable<any> {
+    let httpHeaderAuth = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization':'Bearer ' + JSON.parse(localStorage.getItem('user') || '').token,
+    });
+
+    return this.http.post(this.getORderUrl, data , { headers: httpHeaderAuth });
+  }
+
+  addProduct(data: AddProduct): Observable<any> {
+    let httpHeaderAuth = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization':'Bearer ' + JSON.parse(localStorage.getItem('user') || '').token,
+    });
+
+     return this.http.post(this.addProductUrl, data, {headers:httpHeaderAuth}) 
+  }
+
+  deleteProd(data: OrderAdd): Observable<any> {
+    let httpHeaderAuth = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization':'Bearer ' + JSON.parse(localStorage.getItem('user') || '').token,
+    });
     return this.http.delete(
-      `${this.deleteUrl}UserId=${data.userId}&ProductId=${data.productId}`,
-      { headers: this.httpHeader }
+      `${this.orderDelUrl}${data.productName}`,
+      { headers: httpHeaderAuth }
     );
+  }
+
+  deleteProduct(data: string) :Observable<any> {
+    let httpHeaderAuth = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization':'Bearer ' + JSON.parse(localStorage.getItem('user') || '').token,
+    });
+    return this.http.delete(`${this.deleteProductUrl}${data}`, {headers: httpHeaderAuth})
+  }
+
+  updateSave(data:ProductMain[]): Observable<any> {
+    let httpHeaderAuth = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization':'Bearer ' + JSON.parse(localStorage.getItem('user') || '').token,
+    });
+    return this.http.patch(this.saveChange, data, {headers: httpHeaderAuth} )
   }
 }

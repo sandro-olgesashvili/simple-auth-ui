@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { AddProduct, AddProduct2 } from '../interface/add-product';
-import { Product } from '../interface/product';
-import { UserProd } from '../interface/user-prod';
+import { AddProduct } from '../interface/add-product';
+import { OrderAdd } from '../interface/order-add';
+import { ProductMain } from '../interface/product';
 import { AuthService } from '../service/auth.service';
 import { UiService } from '../service/ui.service';
 
@@ -18,76 +18,145 @@ export class DashboardComponent implements OnInit {
     private authService: AuthService
   ) {}
 
-  prodArr: AddProduct[] = [
-    { productName: 'apple', quantity: 1, price: 200 },
-    { productName: 'samsung', quantity: 1, price: 300 },
-    { productName: 'lenovo', quantity: 1, price: 400 },
-    { productName: 'asus', quantity: 1, price: 500 },
-  ];
+  productName: string = '';
+  quantity: number = 1;
+  price: number = 1;
 
-  cartProd: Product[] = [];
+  prodArr: AddProduct[] = [];
+
+  cartProd: ProductMain[] = [];
 
   message: string = '';
+  messageAdd: string = '';
+
+  role = JSON.parse(localStorage.getItem('user') || '').role;
 
   ngOnInit(): void {
-    this.uiService.sendMess(this.router.url);
+    this.uiService.sendMess(true);
     const user = localStorage.getItem('user');
     if (user === null) {
       this.router.navigate(['/']);
     }
 
-    const user2 = JSON.parse(localStorage.getItem('user') || '');
+    this.authService.getProd().subscribe((x) => {
+      this.prodArr = x;
+      console.log(x);
+    });
 
-    this.getProd(user2.id);
+    this.authService.getOrders().subscribe((x) => {
+      this.cartProd = x;
+      console.log(x);
+    });
   }
 
   plus(nm: string) {
-    this.cartProd.map((item) =>
-      item.productName === nm ? item.quantity++ : item
-    );
+    this.prodArr.map((item) => {
+      if (item.productName === nm && item.quantity !== 0) {
+        item.quantity--;
+        this.cartProd.map((item) =>
+          item.productName === nm ? item.quantity++ : item
+        );
+      }
+    });
   }
   subtract(nm: string) {
+    this.prodArr.map((item) =>
+      item.productName === nm ? item.quantity++ : item
+    );
+
     this.cartProd.map((item) =>
       item.productName === nm ? item.quantity-- : item
     );
   }
 
-  remove(nm: number) {
-    const data: UserProd = {
-      userId: JSON.parse(localStorage.getItem('user') || '').id,
-      productId: nm,
+  remove(nm: string) {
+    const oa: OrderAdd = {
+      productName: nm,
     };
 
-    console.log(data)
-    this.authService.deleteProd(data).subscribe();
-    this.cartProd = this.cartProd.filter((x) => x.id !== nm);
-  }
+    let number = 0;
 
-  getProd(num: string) {
-    this.authService.getProd(num).subscribe((x) => {
-      this.cartProd = x;
-      console.log(this.cartProd);
+    this.cartProd.map((item) =>
+      item.productName === nm ? (number = item.quantity) : item
+    );
+
+    this.prodArr.map((item) =>
+      item.productName === nm ? (item.quantity += number) : item
+    );
+
+    this.authService.deleteProd(oa).subscribe((x) => {
+      this.cartProd = this.cartProd.filter((item) => item.productName !== nm);
     });
   }
 
   addProduct(data: AddProduct) {
-    const sendData: AddProduct2 = {
+    const oa: OrderAdd = {
       productName: data.productName,
-      quantity: data.quantity,
-      price: data.price,
-      authId: JSON.parse(localStorage.getItem('user') || '').id,
     };
 
-    if (!this.cartProd.some((x) => x.productName === data.productName)) {
-      this.authService.addProd(sendData).subscribe((x) => {
+    let check:any = this.prodArr.find(item => item.productName === data.productName);
+
+    if (!this.cartProd.some((x) => x.productName === data.productName) && check.quantity > 0 ) {
+      this.authService.addOrder(oa).subscribe((x) => {
         this.cartProd.push(x);
+        this.prodArr.map((item) =>
+          item.productName === data.productName ? item.quantity-- : item
+        );
       });
     } else {
-      this.message = 'პროდუქტი უკვე დამატებულია';
+      if(check.quantity <= 0) {
+        this.message = 'პროდუქტის რაოდენობა არ არის';
+      } else {
+        this.message = 'პროდუქტი უკვე დამატებულია';
+      }
 
       setTimeout(() => {
         this.message = '';
       }, 2000);
     }
+  }
+
+  onSubmit() {
+    const data: AddProduct = {
+      productName: this.productName,
+      quantity: this.quantity,
+      price: this.price,
+    };
+    if (!this.productName.trim() || this.quantity <= 0 || this.price <= 0) {
+      this.messageAdd = 'შეავსეთ ყველა ველი';
+      setTimeout(() => {
+        this.messageAdd = '';
+      }, 2000);
+      return;
+    }
+
+    if (
+      !this.prodArr.some(
+        (x) => x.productName.toLowerCase() === data.productName.toLowerCase()
+      )
+    ) {
+      this.authService.addProduct(data).subscribe((x) => {
+        this.prodArr.push(x);
+      });
+
+      this.productName = '';
+      this.quantity = 1;
+      this.price = 1;
+    } else {
+      this.messageAdd = 'პროდუქტი უკვე დამატებულია';
+      setTimeout(() => {
+        this.messageAdd = '';
+      }, 2000);
+    }
+  }
+
+  deleteProduct(data: string) {
+    this.authService.deleteProduct(data).subscribe(() => {
+      this.prodArr = this.prodArr.filter((x) => x.productName !== data);
+    });
+  }
+
+  updateSave() {
+    this.authService.updateSave(this.cartProd).subscribe(() => {})
   }
 }

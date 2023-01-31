@@ -1,8 +1,8 @@
-export interface Product {
+export interface ProductMain {
   id: number;
   productName: string;
   quantity: number;
   price: number;
-  auth?: any;
   authId: number;
+  productId: number;
 }

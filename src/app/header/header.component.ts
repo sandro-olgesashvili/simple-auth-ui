@@ -22,7 +22,8 @@ export class HeaderComponent implements OnInit {
   }
 
   clearLoc() {
-    this.uiService.sendMess('')
+    this.uiService.sendMess(false)
+    this.onOff = false;
     localStorage.removeItem('user')
     this.router.navigate(['/'])
   }

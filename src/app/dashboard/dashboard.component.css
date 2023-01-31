@@ -214,3 +214,42 @@
   font-size: 20px;
   text-align: center;
 }
+.product-add {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.product-add input {
+  padding: 10px 20px;
+  border: none;
+  border-bottom: 1px solid black;
+  border-radius: 5px;
+  outline: none;
+}
+.product-btn {
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 17px;
+  padding: 8px 20px;
+  border-radius: 10px;
+  background: #0d66d0;
+  border: none;
+  color: #ffffff;
+  cursor: pointer;
+}
+
+.product-btn-cont {
+  text-align: center;
+}
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.save-cont {
+  margin-top: 50px;
+  text-align: center;
+}

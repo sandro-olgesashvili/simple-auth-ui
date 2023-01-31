@@ -5,11 +5,49 @@
       <div>რაოდენობა</div>
       <div>ფასი</div>
     </div>
-    <div *ngFor="let item of prodArr" class="prduct-item">
+    <div
+      *ngFor="let item of prodArr"
+      class="prduct-item"
+      (dblclick)="deleteProduct(item.productName)"
+    >
       <div>{{ item.productName }}</div>
       <div>{{ item.quantity }}</div>
       <div>{{ item.price }} $</div>
-      <img src="../../assets/images/Vectorblue.png" alt="s" (click)="addProduct(item)" />
+      <img
+        src="../../assets/images/Vectorblue.png"
+        alt="s"
+        (click)="addProduct(item)"
+      />
+    </div>
+    <div *ngIf="role === 'admin'">
+      <form class="product-form" (ngSubmit)="onSubmit()">
+        <div class="product-add">
+          <input
+            type="text"
+            placeholder="პროდუქტის სახელი"
+            [(ngModel)]="productName"
+            name="productName"
+          />
+          <input
+            type="number"
+            min="1"
+            placeholder="რაოდენობა"
+            [(ngModel)]="quantity"
+            name="quantity"
+          />
+          <input
+            type="number"
+            min="1"
+            placeholder="ფასი"
+            [(ngModel)]="price"
+            name="price"
+          />
+        </div>
+        <div class="product-btn-cont">
+          <button class="product-btn" type="submit">დამატებ</button>
+        </div>
+      </form>
+      <h2 class="warng-msg">{{ messageAdd }}</h2>
     </div>
   </div>
   <div class="product-card">
@@ -19,7 +57,7 @@
     </div>
     <div class="product-card-info-container">
       <div *ngFor="let item of cartProd" class="product-card-info">
-        <div class="close" (click)="remove(item.id)">X</div>
+        <div class="close" (click)="remove(item.productName)">X</div>
         <div class="product-card-label">
           <div>პროდუქტის დასახელება</div>
           <div>რაოდენობა</div>
@@ -42,7 +80,10 @@
           <div>{{ item.price * item.quantity }}$</div>
         </div>
       </div>
-      <h2 class="warng-msg">{{message}}</h2>
+      <div class="save-cont">
+        <button class="product-btn" (click)="updateSave()">შენახვა</button>
+      </div>
+      <h2 class="warng-msg">{{ message }}</h2>
     </div>
   </div>
 </div>

@@ -10,14 +10,11 @@ export class UiService {
 
   private subject = new Subject<any>();
 
-  sendMess(url: string) {
-    if(url === '/dashboard'){
-      this.onOff = true;
-      this.subject.next(this.onOff)
-    } else {
-      this.onOff = false;
-      this.subject.next(this.onOff)
-    }
+  sendMess(bool: boolean) {
+  
+    const ls = JSON.parse(localStorage.getItem('user') || '')
+
+    ls ? this.subject.next(this.onOff = bool) : this.subject.next(this.onOff = bool)
   }
 
   onGet():Observable<any> {
