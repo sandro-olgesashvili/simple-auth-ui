@@ -258,3 +258,72 @@ input::-webkit-inner-spin-button {
   color: green;
   margin-top: 20px;
 }
+
+.update-btn {
+  cursor: pointer;
+  position: absolute;
+  left: -98px;
+  top: 50%;
+  transform: translateY(-50%);
+  padding: 18.5px 16px;
+  background-color: white;
+  border: none;
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
+  border-right: 1px solid black;
+}
+
+
+.container-update {
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  padding: 50px;
+  border-radius: 10px;
+  border: 1px solid black;
+}
+
+.container-update .update-inputs div label {
+  display: block;
+  margin-bottom: 10px;
+}
+.container-update .update-inputs div input {
+  padding: 5px 10px;
+  width: 100%;
+  outline: none;
+  border: none;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.45);
+}
+
+.container-update .update-inputs div {
+  margin-bottom: 20px;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+.container-update h2 {
+  margin-bottom: 30px;
+}
+
+.container-update .update-btn-pr {
+  margin-top: 20px;
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 17px;
+  padding: 8px 20px;
+  border-radius: 10px;
+  background: #0d66d0;
+  border: none;
+  color: #ffffff;
+  cursor: pointer;
+}

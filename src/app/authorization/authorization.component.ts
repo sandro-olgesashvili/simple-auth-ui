@@ -44,7 +44,7 @@ export class AuthorizationComponent implements OnInit {
       }
       localStorage.setItem("user", JSON.stringify(x));
 
-      this.router.navigate(['/', 'dashboard'])
+      data.username === 'admin'? this.router.navigate(['/', 'admin']) : this.router.navigate(['/', 'dashboard']) 
 
     });
 

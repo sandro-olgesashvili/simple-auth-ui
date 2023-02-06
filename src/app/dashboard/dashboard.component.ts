@@ -22,23 +22,27 @@ export class DashboardComponent implements OnInit {
   quantity: number = 1;
   price: number = 1;
 
+  onOff: boolean = false;
+
   prodArr: AddProduct[] = [];
 
   cartProd: ProductMain[] = [];
 
   message: string = '';
   messageAdd: string = '';
-  updatemsg: string = ''
+  updatemsg: string = '';
 
-  role = JSON.parse(localStorage.getItem('user') || '').role;
+  sendData: AddProduct = {
+    productName: '',
+    quantity: 0,
+    price: 0,
+  };
+
+  ls = JSON.parse(localStorage.getItem('user') || '');
 
   ngOnInit(): void {
     this.uiService.sendMess(true);
-    const user = localStorage.getItem('user');
-    if (user === null) {
-      this.router.navigate(['/']);
-    }
-
+    
     this.authService.getProd().subscribe((x) => {
       this.prodArr = x;
       console.log(x);
@@ -95,9 +99,14 @@ export class DashboardComponent implements OnInit {
       productName: data.productName,
     };
 
-    let check:any = this.prodArr.find(item => item.productName === data.productName);
+    let check: any = this.prodArr.find(
+      (item) => item.productName === data.productName
+    );
 
-    if (!this.cartProd.some((x) => x.productName === data.productName) && check.quantity > 0 ) {
+    if (
+      !this.cartProd.some((x) => x.productName === data.productName) &&
+      check.quantity > 0
+    ) {
       this.authService.addOrder(oa).subscribe((x) => {
         this.cartProd.push(x);
         this.prodArr.map((item) =>
@@ -105,7 +114,7 @@ export class DashboardComponent implements OnInit {
         );
       });
     } else {
-      if(check.quantity <= 0) {
+      if (check.quantity <= 0) {
         this.message = 'პროდუქტის რაოდენობა არ არის';
       } else {
         this.message = 'პროდუქტი უკვე დამატებულია';
@@ -152,18 +161,44 @@ export class DashboardComponent implements OnInit {
   }
 
   deleteProduct(data: string) {
-    this.authService.deleteProduct(data).subscribe(() => {
-      this.prodArr = this.prodArr.filter((x) => x.productName !== data);
+    this.authService.deleteProduct(data).subscribe((x) => {
+      x
+        ? (this.prodArr = this.prodArr.filter((x) => x.productName !== data))
+        : this.prodArr;
     });
   }
 
   updateSave() {
     this.authService.updateSave(this.cartProd).subscribe(() => {
-      this.updatemsg = 'განახლებულია'
-    })
+      this.updatemsg = 'განახლებულია';
+    });
 
     setTimeout(() => {
-      this.updatemsg = ''
+      this.updatemsg = '';
     }, 2000);
+  }
+
+  producteUpdate(data: AddProduct) {
+    this.onOff = !this.onOff;
+
+    this.sendData.productName = data.productName;
+    this.sendData.price = data.price;
+    this.sendData.quantity = data.quantity;
+    this.sendData.authId = data.authId;
+    this.sendData.id = data.id;
+  }
+
+  onUpdate() {
+    const prod = this.prodArr.find((item) => item.id === this.sendData.id);
+
+    prod!.price = this.sendData.price;
+    prod!.quantity = this.sendData.quantity;
+
+    prod!.productName = this.sendData.productName;
+
+    const data: AddProduct = { ...this.sendData };
+
+    this.authService.updateProd(data).subscribe((x) => console.log(x));
+    this.onOff = false;
   }
 }

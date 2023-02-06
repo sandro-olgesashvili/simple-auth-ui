@@ -18,8 +18,11 @@
         alt="s"
         (click)="addProduct(item)"
       />
+      <button class="update-btn" *ngIf="ls.id === item.authId || ls.role === 'admin'" (click)="producteUpdate(item)">
+        განახლება
+      </button>
     </div>
-    <div *ngIf="role === 'admin'">
+    <div *ngIf="ls.role === 'admin' || ls.role === 'seller'">
       <form class="product-form" (ngSubmit)="onSubmit()">
         <div class="product-add">
           <input
@@ -82,9 +85,30 @@
       </div>
       <div class="save-cont" *ngIf="cartProd.length > 0">
         <button class="product-btn" (click)="updateSave()">შენახვა</button>
-        <h2 class="succ-msg">{{updatemsg}}</h2>
+        <h2 class="succ-msg">{{ updatemsg }}</h2>
       </div>
       <h2 class="warng-msg">{{ message }}</h2>
     </div>
   </div>
 </div>
+<div class="container-update" *ngIf="onOff">
+  <h2>პროდუქტის განახლება</h2>
+  <div class="update-inputs">
+    <form (ngSubmit)="onUpdate()">
+      <div>
+        <label>პროდუქტის სახელი</label>
+        <input type="text" [(ngModel)]="sendData.productName" name="productName" />
+      </div>
+      <div>
+        <label>რაოდენობა</label>
+        <input type="number" [(ngModel)]="sendData.quantity" name="quantity" />
+      </div>
+      <div>
+        <label>ფასი</label>
+        <input type="number" [(ngModel)]="sendData.price" name="price" />
+      </div>
+      <button class="update-btn-pr" type="submit">განახლება</button>
+    </form>
+  </div>
+</div>
+

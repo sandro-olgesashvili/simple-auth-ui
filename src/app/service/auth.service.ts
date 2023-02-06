@@ -25,6 +25,8 @@ export class AuthService {
 
   private saveChange = 'https://localhost:7102/api/auth/save';
 
+  private updateProdUrl = 'https://localhost:7102/api/auth/update'
+
   httpHeader = new HttpHeaders({
     'Content-Type': 'application/json',
   });
@@ -47,7 +49,7 @@ export class AuthService {
       "Authorization":'Bearer ' + JSON.parse(localStorage.getItem('user') || '').token,
     });
 
-    return this.http.get(this.getProductUrl, { headers: httpHeaderAuth });
+    return this.http.get(this.getProductUrl, {headers:httpHeaderAuth});
   }
 
   getOrders(): Observable<any> {
@@ -101,5 +103,13 @@ export class AuthService {
       'Authorization':'Bearer ' + JSON.parse(localStorage.getItem('user') || '').token,
     });
     return this.http.patch(this.saveChange, data, {headers: httpHeaderAuth} )
+  }
+
+  updateProd(data:AddProduct):Observable<any> {
+    let httpHeaderAuth = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization':'Bearer ' + JSON.parse(localStorage.getItem('user') || '').token,
+    });
+    return this.http.patch(this.updateProdUrl, data, {headers:httpHeaderAuth})
   }
 }

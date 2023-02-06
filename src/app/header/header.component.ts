@@ -11,6 +11,7 @@ import { UiService } from '../service/ui.service';
 export class HeaderComponent implements OnInit {
   onOff: boolean = false;
 
+
   subscription: Subscription;;
 
 
@@ -19,7 +20,10 @@ export class HeaderComponent implements OnInit {
   }
 
   ngOnInit(): void {
+
   }
+
+
 
   clearLoc() {
     this.uiService.sendMess(false)
@@ -27,4 +31,7 @@ export class HeaderComponent implements OnInit {
     localStorage.removeItem('user')
     this.router.navigate(['/'])
   }
+
+  
+
 }
