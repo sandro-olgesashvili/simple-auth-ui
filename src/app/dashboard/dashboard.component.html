@@ -101,13 +101,14 @@
       </div>
       <div>
         <label>რაოდენობა</label>
-        <input type="number" [(ngModel)]="sendData.quantity" name="quantity" />
+        <input type="number" min="1" [(ngModel)]="sendData.quantity" name="quantity" />
       </div>
       <div>
         <label>ფასი</label>
-        <input type="number" [(ngModel)]="sendData.price" name="price" />
+        <input type="number" min="1" [(ngModel)]="sendData.price" name="price" />
       </div>
       <button class="update-btn-pr" type="submit">განახლება</button>
+      <h2 class="warng-msg">{{updateProdmsg}}</h2>
     </form>
   </div>
 </div>

@@ -11,6 +11,8 @@ import { UpdateComponent } from './update/update.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { HeaderComponent } from './header/header.component';
 import { AdminComponent } from './admin/admin.component';
+import {TableModule} from 'primeng/table';
+
 
 @NgModule({
   declarations: [
@@ -26,7 +28,8 @@ import { AdminComponent } from './admin/admin.component';
     BrowserModule,
     AppRoutingModule,
     FormsModule,
-    HttpClientModule
+    HttpClientModule,
+    TableModule
   ],
   providers: [
   ],

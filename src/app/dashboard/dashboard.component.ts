@@ -31,6 +31,8 @@ export class DashboardComponent implements OnInit {
   message: string = '';
   messageAdd: string = '';
   updatemsg: string = '';
+  updateProdmsg:string =''
+  
 
   sendData: AddProduct = {
     productName: '',
@@ -42,7 +44,7 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit(): void {
     this.uiService.sendMess(true);
-    
+
     this.authService.getProd().subscribe((x) => {
       this.prodArr = x;
       console.log(x);
@@ -179,7 +181,7 @@ export class DashboardComponent implements OnInit {
   }
 
   producteUpdate(data: AddProduct) {
-    this.onOff = !this.onOff;
+    this.onOff = true;
 
     this.sendData.productName = data.productName;
     this.sendData.price = data.price;
@@ -194,11 +196,21 @@ export class DashboardComponent implements OnInit {
     prod!.price = this.sendData.price;
     prod!.quantity = this.sendData.quantity;
 
-    prod!.productName = this.sendData.productName;
-
+    
     const data: AddProduct = { ...this.sendData };
+    
+    if (data.quantity <= 0 || data.price <= 0 || !data.productName.trim()) {
+      this.updateProdmsg = 'შეავსეთ ყველა ველი'
+      setTimeout(() => {
+        this.updateProdmsg = ''
+      }, 2000);
+    } else {
+      prod!.productName = this.sendData.productName;
+      prod!.price = this.sendData.price;
+      prod!.quantity = this.sendData.quantity;
 
-    this.authService.updateProd(data).subscribe((x) => console.log(x));
-    this.onOff = false;
+      this.authService.updateProd(data).subscribe((x) => console.log(x));
+      this.onOff = false;
+    }
   }
 }
