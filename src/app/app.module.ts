@@ -61,9 +61,7 @@ import {InputTextModule} from 'primeng/inputtext';
     ProgressBarModule,
     HttpClientModule,
     FormsModule,
-    BrowserAnimationsModule
-    
-
+    BrowserAnimationsModule,
   ],
   providers: [
      

@@ -4,6 +4,7 @@ import { AdminComponent } from './admin/admin.component';
 import { AuthorizationComponent } from './authorization/authorization.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { RegisterComponent } from './register/register.component';
+import { AdminGuard } from './service/admin.guard';
 import { AuthguardGuard } from './service/authguard.guard';
 import { UpdateComponent } from './update/update.component';
 
@@ -12,7 +13,7 @@ const routes: Routes = [
   { path: 'register', component: RegisterComponent },
   { path: 'update', component: UpdateComponent, },
   { path: 'dashboard', component: DashboardComponent, canActivate: [AuthguardGuard] },
-  { path: 'admin', component: AdminComponent, canActivate: [AuthguardGuard] },
+  { path: 'admin', component: AdminComponent, canActivate: [AdminGuard] },
 ];
 
 @NgModule({

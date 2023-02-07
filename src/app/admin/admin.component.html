@@ -1,10 +1,18 @@
 <p-toast></p-toast>
 <button class="logout-btn" (click)="logout()">გასვლა</button>
 <div class="card">
-  <p-table [value]="products2" dataKey="id" editMode="row">
+  <p-table
+    [value]="products2"
+    dataKey="id"
+    editMode="row"
+    [paginator]="true"
+    [rows]="5"
+    [showCurrentPageReport]="true"
+    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+    >
     <ng-template pTemplate="header">
       <tr>
-        <th >Name</th>
+        <th>Name</th>
         <th>Quantity</th>
         <th>Price</th>
         <th style="width: 8rem"></th>
@@ -17,7 +25,7 @@
       let-ri="rowIndex"
     >
       <tr [pEditableRow]="product">
-        <td style="width: 25%" (click)="deleteProd(product)">
+        <td style="width: 25%" (dblclick)="deleteProd(product)">
           <p-cellEditor>
             <ng-template pTemplate="input">
               <input
@@ -99,3 +107,58 @@
     </ng-template>
   </p-table>
 </div>
+
+<form (ngSubmit)="addProduct()">
+  <div class="cont-form">
+    <div class="p-col-12 p-md-4">
+      <div class="p-inputgroup">
+        <span class="p-inputgroup-addon"><i class="pi pi-cart-plus"></i></span>
+        <input
+          type="text"
+          required
+          pInputText
+          placeholder="Product name"
+          [(ngModel)]="addObj.productName"
+          name="productName"
+        />
+      </div>
+    </div>
+
+    <div class="p-col-12 p-md-4">
+      <div class="p-inputgroup">
+        <span class="p-inputgroup-addon">$</span>
+        <input
+          type="number"
+          pInputText
+          placeholder="Price"
+          required
+          min="1"
+          [(ngModel)]="addObj.price"
+          name="price"
+        />
+        <span class="p-inputgroup-addon">.00</span>
+      </div>
+    </div>
+
+    <div class="p-col-12 p-md-4">
+      <div class="p-inputgroup">
+        <span class="p-inputgroup-addon">Quantity</span>
+        <input
+          type="number"
+          required
+          min="1"
+          pInputText
+          placeholder="Website"
+          [(ngModel)]="addObj.quantity"
+          name="quantity"
+        />
+      </div>
+    </div>
+    <p-button
+      label="Add"
+      type="submit"
+      icon="pi pi-check"
+      styleClass="p-button"
+    ></p-button>
+  </div>
+</form>

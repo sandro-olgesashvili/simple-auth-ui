@@ -25,6 +25,12 @@ export class AdminComponent implements OnInit {
 
   statuses!: SelectItem[];
 
+  addObj: AddProduct = {
+    productName: '',
+    quantity: 0,
+    price: 0,
+  };
+
   clonedProducts: { [s: string]: AddProduct } = {};
 
   constructor(
@@ -80,6 +86,32 @@ export class AdminComponent implements OnInit {
             (x) => x.productName !== data.productName
           ))
       );
+  }
+
+  addProduct() {
+    if (
+      this.addObj.productName.trim() &&
+      this.addObj.price > 0 &&
+      this.addObj.quantity > 0
+    ) {
+      this.messageService.add({
+        severity: 'success',
+        summary: 'Success',
+        detail: 'პროდუქტუ დამატებულია',
+      });
+      this.authService
+        .addProduct(this.addObj)
+        .subscribe((x) => this.products2.push(x));
+      this.addObj.productName = '';
+      this.addObj.price = 0;
+      this.addObj.quantity = 0;
+    } else {
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Error',
+        detail: 'შეავსეთ ყველა ველი',
+      });
+    }
   }
 
   logout() {
