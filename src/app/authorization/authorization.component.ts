@@ -19,8 +19,6 @@ export class AuthorizationComponent implements OnInit {
   ngOnInit(): void {
     const user = JSON.parse(localStorage.getItem("user") || "");
 
-    this.uiService.sendMess(false);
-
     if(user) {
       this.router.navigate(['/', 'dashboard'])
     }
@@ -55,4 +53,5 @@ export class AuthorizationComponent implements OnInit {
     this.username = '';
     this.password = '';
   }
+
 }

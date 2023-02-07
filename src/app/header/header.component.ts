@@ -23,8 +23,6 @@ export class HeaderComponent implements OnInit {
 
   }
 
-
-
   clearLoc() {
     this.uiService.sendMess(false)
     this.onOff = false;

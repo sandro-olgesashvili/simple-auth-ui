@@ -327,3 +327,20 @@ input[type="number"] {
   color: #ffffff;
   cursor: pointer;
 }
+
+
+.logout-btn {
+  position: absolute;
+  right: 50px;
+  top:20px;
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 17px;
+  padding: 8px 20px;
+  border-radius: 10px;
+  background: #0d66d0;
+  border: none;
+  color: #ffffff;
+  cursor: pointer;
+  z-index: 20;
+}

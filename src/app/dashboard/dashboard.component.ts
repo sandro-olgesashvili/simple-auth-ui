@@ -213,4 +213,9 @@ export class DashboardComponent implements OnInit {
       this.onOff = false;
     }
   }
+
+  logout() {
+    localStorage.removeItem('user')
+    this.router.navigate(['/'])
+  }
 }
