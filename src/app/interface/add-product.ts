@@ -6,9 +6,6 @@ export interface AddProduct {
   authId?: number;
 
 }
-// export interface AddProduct2 {
-//   productName: string;
-//   quantity: number;
-//   price: number;
-//   authId: number;
-// }
+export interface User {
+  name: string,
+}

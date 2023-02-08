@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { MessageService, SelectItem } from 'primeng/api';
-import { AddProduct } from '../interface/add-product';
+import { AddProduct, User } from '../interface/add-product';
 import { AuthService } from '../service/auth.service';
 
 @Component({
@@ -23,6 +23,9 @@ export class AdminComponent implements OnInit {
 
   products2!: AddProduct[];
 
+  usersArr: User[] = []
+  selectedUser!: string;
+
   statuses!: SelectItem[];
 
   addObj: AddProduct = {
@@ -42,6 +45,7 @@ export class AdminComponent implements OnInit {
   ngOnInit(): void {
     this.authService.getProd().subscribe((x) => (this.products1 = x));
     this.authService.getProd().subscribe((x) => (this.products2 = x));
+    this.authService.getUsers().subscribe(x => { this.usersArr = x})
 
     this.statuses = [
       { label: 10, value: 10 },

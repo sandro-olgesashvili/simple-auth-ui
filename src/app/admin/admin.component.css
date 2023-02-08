@@ -118,3 +118,8 @@
   align-items: center;
   justify-content: space-evenly;
 }
+
+.user-drop {
+  padding-top: 50px;
+  padding-left: 50px;
+}

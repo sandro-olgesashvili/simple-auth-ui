@@ -28,6 +28,8 @@ export class AuthService {
 
   private updateProdUrl = 'https://localhost:7102/api/auth/update';
 
+  private getUsersUrl = "https://localhost:7102/api/auth/users"
+
   httpHeader = new HttpHeaders({
     'Content-Type': 'application/json',
   });
@@ -79,5 +81,9 @@ export class AuthService {
 
   updateProd(data: AddProduct): Observable<any> {
     return this.http.patch(this.updateProdUrl, data);
+  }
+
+  getUsers():Observable<any> {
+    return this.http.get(this.getUsersUrl)
   }
 }
