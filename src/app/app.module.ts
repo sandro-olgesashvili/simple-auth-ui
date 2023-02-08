@@ -29,6 +29,9 @@ import {ProgressBarModule} from 'primeng/progressbar';
 import {InputTextModule} from 'primeng/inputtext';
 
 
+import { AuthInterceptor } from './service/auth.interceptor';
+
+
 
 
 
@@ -64,7 +67,7 @@ import {InputTextModule} from 'primeng/inputtext';
     BrowserAnimationsModule,
   ],
   providers: [
-     
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
   ],
   bootstrap: [AppComponent]
 })

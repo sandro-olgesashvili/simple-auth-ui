@@ -16,22 +16,28 @@ export class AuthService {
 
   private getProductUrl = 'https://localhost:7102/api/auth/products';
 
-  private addProductUrl = "https://localhost:7102/api/auth/product"
+  private addProductUrl = 'https://localhost:7102/api/auth/product';
 
   private getORderUrl = 'https://localhost:7102/api/auth/orders';
-  private orderDelUrl = 'https://localhost:7102/api/auth/orders?ProductName='
+  private orderDelUrl = 'https://localhost:7102/api/auth/orders?ProductName=';
 
-  private deleteProductUrl = 'https://localhost:7102/api/auth/products?ProductName=';
+  private deleteProductUrl =
+    'https://localhost:7102/api/auth/products?ProductName=';
 
   private saveChange = 'https://localhost:7102/api/auth/save';
 
-  private updateProdUrl = 'https://localhost:7102/api/auth/update'
+  private updateProdUrl = 'https://localhost:7102/api/auth/update';
 
   httpHeader = new HttpHeaders({
     'Content-Type': 'application/json',
   });
 
   constructor(private http: HttpClient) {}
+
+  isLogged() {
+    const token = JSON.parse(localStorage.getItem('user')!);
+    return token;
+  }
 
   reqLogin(data: Authobj): Observable<any> {
     return this.http.post(this.urlLogin, data, { headers: this.httpHeader });
@@ -44,72 +50,34 @@ export class AuthService {
     return this.http.put(this.urlLogin, data, { headers: this.httpHeader });
   }
   getProd(): Observable<any> {
-    let httpHeaderAuth = new HttpHeaders({
-      'Content-Type': 'application/json',
-      "Authorization":'Bearer ' + JSON.parse(localStorage.getItem('user') || '').token,
-    });
-
-    return this.http.get(this.getProductUrl, {headers:httpHeaderAuth});
+    return this.http.get(this.getProductUrl);
   }
 
   getOrders(): Observable<any> {
-    let httpHeaderAuth = new HttpHeaders({
-      'Content-Type': 'application/json',
-      'Authorization':'Bearer ' + JSON.parse(localStorage.getItem('user') || '').token,
-    });
-    return this.http.get(this.getORderUrl,{headers: httpHeaderAuth})
+    return this.http.get(this.getORderUrl);
   }
-  
-  addOrder(data: OrderAdd): Observable<any> {
-    let httpHeaderAuth = new HttpHeaders({
-      'Content-Type': 'application/json',
-      'Authorization':'Bearer ' + JSON.parse(localStorage.getItem('user') || '').token,
-    });
 
-    return this.http.post(this.getORderUrl, data , { headers: httpHeaderAuth });
+  addOrder(data: OrderAdd): Observable<any> {
+    return this.http.post(this.getORderUrl, data);
   }
 
   addProduct(data: AddProduct): Observable<any> {
-    let httpHeaderAuth = new HttpHeaders({
-      'Content-Type': 'application/json',
-      'Authorization':'Bearer ' + JSON.parse(localStorage.getItem('user') || '').token,
-    });
-
-     return this.http.post(this.addProductUrl, data, {headers:httpHeaderAuth}) 
+    return this.http.post(this.addProductUrl, data);
   }
 
   deleteProd(data: OrderAdd): Observable<any> {
-    let httpHeaderAuth = new HttpHeaders({
-      'Content-Type': 'application/json',
-      'Authorization':'Bearer ' + JSON.parse(localStorage.getItem('user') || '').token,
-    });
-    return this.http.delete(
-      `${this.orderDelUrl}${data.productName}`,
-      { headers: httpHeaderAuth }
-    );
+    return this.http.delete(`${this.orderDelUrl}${data.productName}`);
   }
 
-  deleteProduct(data: string) :Observable<any> {
-    let httpHeaderAuth = new HttpHeaders({
-      'Content-Type': 'application/json',
-      'Authorization':'Bearer ' + JSON.parse(localStorage.getItem('user') || '').token,
-    });
-    return this.http.delete(`${this.deleteProductUrl}${data}`, {headers: httpHeaderAuth})
+  deleteProduct(data: string): Observable<any> {
+    return this.http.delete(`${this.deleteProductUrl}${data}`);
   }
 
-  updateSave(data:ProductMain[]): Observable<any> {
-    let httpHeaderAuth = new HttpHeaders({
-      'Content-Type': 'application/json',
-      'Authorization':'Bearer ' + JSON.parse(localStorage.getItem('user') || '').token,
-    });
-    return this.http.patch(this.saveChange, data, {headers: httpHeaderAuth} )
+  updateSave(data: ProductMain[]): Observable<any> {
+    return this.http.patch(this.saveChange, data);
   }
 
-  updateProd(data:AddProduct):Observable<any> {
-    let httpHeaderAuth = new HttpHeaders({
-      'Content-Type': 'application/json',
-      'Authorization':'Bearer ' + JSON.parse(localStorage.getItem('user') || '').token,
-    });
-    return this.http.patch(this.updateProdUrl, data, {headers:httpHeaderAuth})
+  updateProd(data: AddProduct): Observable<any> {
+    return this.http.patch(this.updateProdUrl, data);
   }
 }
