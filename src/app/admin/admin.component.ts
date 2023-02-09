@@ -23,8 +23,8 @@ export class AdminComponent implements OnInit {
 
   products2!: AddProduct[];
 
-  usersArr: User[] = []
-  selectedUser!: string;
+  usersArr: User[] = [];
+  selectedUser!: User;
 
   statuses!: SelectItem[];
 
@@ -45,7 +45,9 @@ export class AdminComponent implements OnInit {
   ngOnInit(): void {
     this.authService.getProd().subscribe((x) => (this.products1 = x));
     this.authService.getProd().subscribe((x) => (this.products2 = x));
-    this.authService.getUsers().subscribe(x => { this.usersArr = x})
+    this.authService.getUsers().subscribe((x) => {
+      this.usersArr = x;
+    });
 
     this.statuses = [
       { label: 10, value: 10 },
@@ -121,5 +123,13 @@ export class AdminComponent implements OnInit {
   logout() {
     localStorage.removeItem('user');
     this.route.navigate(['/']);
+  }
+
+  onChange() {
+    if (this.selectedUser !== null) {
+      this.products2 = this.products2.filter(x => x.authId === this.selectedUser.code)
+    } else {
+      this.products2 = this.products1;
+    }
   }
 }

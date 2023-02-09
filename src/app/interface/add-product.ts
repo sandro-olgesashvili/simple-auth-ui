@@ -8,4 +8,5 @@ export interface AddProduct {
 }
 export interface User {
   name: string,
+  code: number
 }
