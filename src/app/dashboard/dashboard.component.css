@@ -273,7 +273,6 @@ input::-webkit-inner-spin-button {
   border-right: 1px solid black;
 }
 
-
 .container-update {
   position: fixed;
   left: 50%;
@@ -328,11 +327,10 @@ input[type="number"] {
   cursor: pointer;
 }
 
-
 .logout-btn {
   position: absolute;
   right: 50px;
-  top:20px;
+  top: 20px;
   font-weight: 700;
   font-size: 14px;
   line-height: 17px;
@@ -343,4 +341,21 @@ input[type="number"] {
   color: #ffffff;
   cursor: pointer;
   z-index: 20;
+}
+
+.voucher-btn {
+  padding-block: 10px;
+}
+
+
+.voucher-form {
+  padding-block: 10px;
+}
+
+
+.voucher-form form {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
 }

@@ -1,21 +1,27 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { MessageService } from 'primeng/api';
 import { AddProduct } from '../interface/add-product';
 import { OrderAdd } from '../interface/order-add';
 import { ProductMain } from '../interface/product';
+import { UseVoucher } from '../interface/voucher';
 import { AuthService } from '../service/auth.service';
 import { UiService } from '../service/ui.service';
+import { VoucherService } from '../service/voucher.service';
 
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.css'],
+  providers: [MessageService],
 })
 export class DashboardComponent implements OnInit {
   constructor(
     private router: Router,
     private uiService: UiService,
-    private authService: AuthService
+    private authService: AuthService,
+    private messageService: MessageService,
+    private voucherService: VoucherService
   ) {}
 
   productName: string = '';
@@ -31,8 +37,11 @@ export class DashboardComponent implements OnInit {
   message: string = '';
   messageAdd: string = '';
   updatemsg: string = '';
-  updateProdmsg:string =''
-  
+  updateProdmsg: string = '';
+
+  voucherCode: string = '';
+
+  voucherBtn: string = '';
 
   sendData: AddProduct = {
     productName: '',
@@ -196,13 +205,12 @@ export class DashboardComponent implements OnInit {
     prod!.price = this.sendData.price;
     prod!.quantity = this.sendData.quantity;
 
-    
     const data: AddProduct = { ...this.sendData };
-    
+
     if (data.quantity <= 0 || data.price <= 0 || !data.productName.trim()) {
-      this.updateProdmsg = 'შეავსეთ ყველა ველი'
+      this.updateProdmsg = 'შეავსეთ ყველა ველი';
       setTimeout(() => {
-        this.updateProdmsg = ''
+        this.updateProdmsg = '';
       }, 2000);
     } else {
       prod!.productName = this.sendData.productName;
@@ -214,8 +222,53 @@ export class DashboardComponent implements OnInit {
     }
   }
 
+  onVoucher(data: string) {
+    this.voucherBtn = data;
+  }
+
+  cancelVoucher() {
+    this.voucherBtn = '';
+    this.voucherCode = '';
+  }
+
+  useVoucher(itemId: number) {
+    if (this.voucherCode.length < 16) {
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Error',
+        detail: 'არასწორია ვაუჩერის კოდი',
+      });
+    } else {
+      const data: UseVoucher = {
+        voucherCode: this.voucherCode,
+        orderId: itemId,
+      };
+
+      this.voucherService.useVoucher(data).subscribe((x) => {
+        if (x === false) {
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error',
+            detail: 'არასწორია ვაუჩერის კოდი',
+          });
+        } else {
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Success',
+            detail: 'ვაუჩერი დამატებულია',
+          });
+          this.cartProd.map((item) =>
+            item.id === itemId ? (item.price = x.price) : item
+          );
+          this.voucherCode = '';
+          this.voucherBtn = '';
+        }
+      });
+    }
+  }
+
   logout() {
-    localStorage.removeItem('user')
-    this.router.navigate(['/'])
+    localStorage.removeItem('user');
+    this.router.navigate(['/']);
   }
 }

@@ -15,6 +15,7 @@ export class AdminGuard implements CanActivate {
         return true;
       }
       this.router.navigate(['/']);
+      localStorage.removeItem('user');
       return false;
   }
   

@@ -132,4 +132,8 @@ export class AdminComponent implements OnInit {
       this.products2 = this.products1;
     }
   }
+
+  goBack() {
+    this.route.navigate(['/voucher'])
+  }
 }

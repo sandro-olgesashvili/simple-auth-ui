@@ -30,6 +30,7 @@ import {InputTextModule} from 'primeng/inputtext';
 
 
 import { AuthInterceptor } from './service/auth.interceptor';
+import { VoucherComponent } from './voucher/voucher.component';
 
 
 
@@ -44,6 +45,7 @@ import { AuthInterceptor } from './service/auth.interceptor';
     DashboardComponent,
     HeaderComponent,
     AdminComponent,
+    VoucherComponent,
   ],
   imports: [
     BrowserModule,

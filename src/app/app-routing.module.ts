@@ -7,6 +7,7 @@ import { RegisterComponent } from './register/register.component';
 import { AdminGuard } from './service/admin.guard';
 import { AuthguardGuard } from './service/authguard.guard';
 import { UpdateComponent } from './update/update.component';
+import { VoucherComponent } from './voucher/voucher.component';
 
 const routes: Routes = [
   { path: '', component: AuthorizationComponent},
@@ -14,6 +15,7 @@ const routes: Routes = [
   { path: 'update', component: UpdateComponent, },
   { path: 'dashboard', component: DashboardComponent, canActivate: [AuthguardGuard] },
   { path: 'admin', component: AdminComponent, canActivate: [AdminGuard] },
+  {path: 'voucher', component: VoucherComponent, canActivate:[AdminGuard]}
 ];
 
 @NgModule({
