@@ -6,6 +6,7 @@ import { OrderAdd } from '../interface/order-add';
 import { ProductMain } from '../interface/product';
 import { UseVoucher } from '../interface/voucher';
 import { AuthService } from '../service/auth.service';
+import { SoldService } from '../service/sold.service';
 import { UiService } from '../service/ui.service';
 import { VoucherService } from '../service/voucher.service';
 
@@ -21,7 +22,8 @@ export class DashboardComponent implements OnInit {
     private uiService: UiService,
     private authService: AuthService,
     private messageService: MessageService,
-    private voucherService: VoucherService
+    private voucherService: VoucherService,
+    private soldService:SoldService
   ) {}
 
   productName: string = '';
@@ -266,6 +268,20 @@ export class DashboardComponent implements OnInit {
       });
     }
   }
+
+
+  onBuy() {
+    this.soldService.buyProduct().subscribe(x => {
+      this.messageService.add({
+        severity: 'success',
+        summary: 'Success',
+        detail: 'პროდუქტი შეძენილია',
+      });
+      this.cartProd = []
+    })
+  }
+  
+
 
   logout() {
     localStorage.removeItem('user');

@@ -6,6 +6,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { RegisterComponent } from './register/register.component';
 import { AdminGuard } from './service/admin.guard';
 import { AuthguardGuard } from './service/authguard.guard';
+import { SoldComponent } from './sold/sold.component';
 import { UpdateComponent } from './update/update.component';
 import { VoucherComponent } from './voucher/voucher.component';
 
@@ -15,7 +16,8 @@ const routes: Routes = [
   { path: 'update', component: UpdateComponent, },
   { path: 'dashboard', component: DashboardComponent, canActivate: [AuthguardGuard] },
   { path: 'admin', component: AdminComponent, canActivate: [AdminGuard] },
-  {path: 'voucher', component: VoucherComponent, canActivate:[AdminGuard]}
+  { path: 'voucher', component: VoucherComponent, canActivate:[AdminGuard]},
+  { path: 'sold', component: SoldComponent, canActivate:[AdminGuard]}
 ];
 
 @NgModule({

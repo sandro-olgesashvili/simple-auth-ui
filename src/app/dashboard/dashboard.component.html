@@ -126,7 +126,10 @@
         </div>
       </div>
       <div class="save-cont" *ngIf="cartProd.length > 0">
-        <button class="product-btn" (click)="updateSave()">შენახვა</button>
+        <div class="btn-box">
+          <button class="product-btn" (click)="updateSave()">შენახვა</button>
+          <button class="product-btn" (click)="onBuy()">ყიდვა</button>
+        </div>
         <h2 class="succ-msg">{{ updatemsg }}</h2>
       </div>
       <h2 class="warng-msg">{{ message }}</h2>

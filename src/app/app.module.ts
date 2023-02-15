@@ -31,6 +31,7 @@ import {InputTextModule} from 'primeng/inputtext';
 
 import { AuthInterceptor } from './service/auth.interceptor';
 import { VoucherComponent } from './voucher/voucher.component';
+import { SoldComponent } from './sold/sold.component';
 
 
 
@@ -46,6 +47,7 @@ import { VoucherComponent } from './voucher/voucher.component';
     HeaderComponent,
     AdminComponent,
     VoucherComponent,
+    SoldComponent,
   ],
   imports: [
     BrowserModule,

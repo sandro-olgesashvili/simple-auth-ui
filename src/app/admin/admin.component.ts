@@ -136,4 +136,7 @@ export class AdminComponent implements OnInit {
   goBack() {
     this.route.navigate(['/voucher'])
   }
+  soldList() {
+    this.route.navigate(['/sold'])
+  }
 }

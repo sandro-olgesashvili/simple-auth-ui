@@ -359,3 +359,10 @@ input[type="number"] {
   justify-content: center;
   gap: 10px;
 }
+
+.btn-box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 30px;
+}
