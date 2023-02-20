@@ -366,3 +366,9 @@ input[type="number"] {
   justify-content: center;
   gap: 30px;
 }
+
+.show-btn {
+  position: absolute;
+  left: 100px;
+  top:23px;
+}

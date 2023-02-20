@@ -3,6 +3,10 @@ import { Router } from '@angular/router';
 import { Sold } from '../interface/sold';
 import { SoldService } from '../service/sold.service';
 
+
+
+
+
 @Component({
   selector: 'app-sold',
   templateUrl: './sold.component.html',
@@ -11,15 +15,24 @@ import { SoldService } from '../service/sold.service';
 export class SoldComponent implements OnInit {
   soldArr: Sold[] = [];
 
+  searchText: string = '';
+
+
+
   constructor(private soldService: SoldService, private router: Router) {}
 
   ngOnInit(): void {
-    this.soldService.getSoldProduct().subscribe((x) => (this.soldArr = x));
+    this.soldService.getSoldProduct().subscribe((x) => {
+      this.soldArr = x;
+      console.log(x);
+    });
   }
+
 
   goBack() {
     this.router.navigate(['/admin']);
   }
+  
 
   onDelSoldProduct(id: number) {
     return this.soldService

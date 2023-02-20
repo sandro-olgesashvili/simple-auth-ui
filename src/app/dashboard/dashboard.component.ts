@@ -1,6 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
+import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
+import { DailogSoldComponent } from '../dailog-sold/dailog-sold.component';
 import { AddProduct } from '../interface/add-product';
 import { OrderAdd } from '../interface/order-add';
 import { ProductMain } from '../interface/product';
@@ -14,17 +16,20 @@ import { VoucherService } from '../service/voucher.service';
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.css'],
-  providers: [MessageService],
+  providers: [MessageService, DialogService],
 })
-export class DashboardComponent implements OnInit {
+export class DashboardComponent implements OnInit, OnDestroy {
   constructor(
     private router: Router,
     private uiService: UiService,
     private authService: AuthService,
     private messageService: MessageService,
     private voucherService: VoucherService,
-    private soldService:SoldService
+    private soldService: SoldService,
+    private dialogService: DialogService
   ) {}
+
+  ref!: DynamicDialogRef;
 
   productName: string = '';
   quantity: number = 1;
@@ -269,19 +274,44 @@ export class DashboardComponent implements OnInit {
     }
   }
 
-
   onBuy() {
-    this.soldService.buyProduct().subscribe(x => {
+    this.soldService.buyProduct().subscribe((x) => {
       this.messageService.add({
         severity: 'success',
         summary: 'Success',
         detail: 'პროდუქტი შეძენილია',
       });
-      this.cartProd = []
-    })
+      this.cartProd = [];
+    });
   }
-  
 
+  show() {
+    this.ref = this.dialogService.open(DailogSoldComponent, {
+      header: 'Sold Product',
+      width: '70%',
+      contentStyle: { overflow: 'auto' },
+      baseZIndex: 10000,
+      maximizable: true,
+    });
+
+    this.ref.onClose.subscribe(() => {
+      this.authService.getProd().subscribe((x) => (this.prodArr = x));
+    });
+
+    this.ref.onMaximize.subscribe((value: any) => {
+      this.messageService.add({
+        severity: 'info',
+        summary: 'Maximized',
+        detail: `maximized: ${value.maximized}`,
+      });
+    });
+  }
+
+  ngOnDestroy() {
+    if (this.ref) {
+      this.ref.close();
+    }
+  }
 
   logout() {
     localStorage.removeItem('user');

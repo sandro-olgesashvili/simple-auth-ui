@@ -15,6 +15,15 @@
         <span class="p-inputgroup-addon">.00</span>
       </div>
     </div>
+    <div class="p-field p-col-12 p-md-4">
+      <p-calendar
+        inputId="expireDate"
+        placeholder="Calendar"
+        [(ngModel)]="setDate"
+        name="expireDate"
+        [required]="true"
+      ></p-calendar>
+    </div>
 
     <p-button
       label="create Voucher"
@@ -39,6 +48,7 @@
       <th>Voucher Code</th>
       <th>Price</th>
       <th>Used</th>
+      <th>Expire Date</th>
       <th>Delete</th>
     </tr>
   </ng-template>
@@ -46,7 +56,8 @@
     <tr>
       <td>{{ product.voucherCode }}</td>
       <td>{{ product.price }} $</td>
-      <td>{{ product.used ? "Yes" : "No" }}</td>
+      <td>{{ product.used === 1 ? "No" : product.used === 2 ? "Blocked" : "Yes" }}</td>
+      <td>{{ product.expireDate | date:"dd/MM/yy" }}</td>
       <td>
         <button
           (click)="onDelete(product.voucherCode)"

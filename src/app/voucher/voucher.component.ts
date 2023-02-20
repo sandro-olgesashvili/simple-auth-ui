@@ -13,19 +13,25 @@ export class VoucherComponent implements OnInit {
 
   voucherArr: GetVoucher[] = [];
 
+  setDate!: Date;
+
   constructor(private voucherService: VoucherService, private router: Router) {}
 
   ngOnInit(): void {
     this.voucherService.getVoucher().subscribe((x) => (this.voucherArr = x));
+
   }
 
   onSubmit() {
+    console.log(this.setDate);
     if (this.price > 0) {
       this.voucherService
-        .createVoucher({ price: this.price })
+        .createVoucher({ price: this.price, expireDate: this.setDate })
         .subscribe((x) => this.voucherArr.push(x));
 
       this.price = 1;
+
+      this.setDate = new Date();
     }
   }
 

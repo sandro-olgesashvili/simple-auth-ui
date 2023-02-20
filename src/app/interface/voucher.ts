@@ -1,5 +1,6 @@
 export interface Voucher {
   price: number;
+  expireDate:Date
 }
 export interface GetVoucher {
   id: number;
@@ -7,6 +8,7 @@ export interface GetVoucher {
   price: number;
   used: boolean;
   authId: number;
+  expireDate:Date 
 }
 
 export interface UseVoucher {

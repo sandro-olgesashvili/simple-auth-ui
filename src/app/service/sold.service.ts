@@ -11,6 +11,10 @@ export class SoldService {
 
   private soldDelUrl = "https://localhost:7102/api/SoldProduct?id="
 
+  private soldUserUrl = "https://localhost:7102/api/SoldProduct/user"
+
+  private soldUserDelUrl = "https://localhost:7102/api/SoldProduct/user?id="
+
   constructor(private http:HttpClient) { }
 
   getSoldProduct():Observable<any> {
@@ -23,6 +27,14 @@ export class SoldService {
 
   buyProduct():Observable<any> {
     return this.http.post(this.soldDelUrl, 'payload');
+  }
+
+  getSoldListUser():Observable<any> {
+    return this.http.get(this.soldUserUrl)
+  }
+
+  delSoldItemUser(id:number):Observable<any> {
+    return this.http.delete(`${this.soldUserDelUrl}${id}`)
   }
 
   

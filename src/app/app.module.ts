@@ -14,6 +14,7 @@ import { AdminComponent } from './admin/admin.component';
 import {TableModule} from 'primeng/table';
 
 
+
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 
@@ -27,11 +28,14 @@ import {ButtonModule} from 'primeng/button';
 import {DropdownModule} from 'primeng/dropdown';
 import {ProgressBarModule} from 'primeng/progressbar';
 import {InputTextModule} from 'primeng/inputtext';
+import { DynamicDialogModule } from 'primeng/dynamicdialog';
+
 
 
 import { AuthInterceptor } from './service/auth.interceptor';
 import { VoucherComponent } from './voucher/voucher.component';
 import { SoldComponent } from './sold/sold.component';
+import { DailogSoldComponent } from './dailog-sold/dailog-sold.component';
 
 
 
@@ -48,6 +52,7 @@ import { SoldComponent } from './sold/sold.component';
     AdminComponent,
     VoucherComponent,
     SoldComponent,
+    DailogSoldComponent,
   ],
   imports: [
     BrowserModule,
@@ -69,10 +74,14 @@ import { SoldComponent } from './sold/sold.component';
     HttpClientModule,
     FormsModule,
     BrowserAnimationsModule,
+    DynamicDialogModule
+
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
   ],
+
+  
   bootstrap: [AppComponent]
 })
 export class AppModule { }
