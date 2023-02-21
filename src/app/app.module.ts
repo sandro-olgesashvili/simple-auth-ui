@@ -29,6 +29,8 @@ import {DropdownModule} from 'primeng/dropdown';
 import {ProgressBarModule} from 'primeng/progressbar';
 import {InputTextModule} from 'primeng/inputtext';
 import { DynamicDialogModule } from 'primeng/dynamicdialog';
+import {ChartModule} from 'primeng/chart';
+
 
 
 
@@ -36,6 +38,7 @@ import { AuthInterceptor } from './service/auth.interceptor';
 import { VoucherComponent } from './voucher/voucher.component';
 import { SoldComponent } from './sold/sold.component';
 import { DailogSoldComponent } from './dailog-sold/dailog-sold.component';
+import { ChartreportComponent } from './chartreport/chartreport.component';
 
 
 
@@ -53,6 +56,7 @@ import { DailogSoldComponent } from './dailog-sold/dailog-sold.component';
     VoucherComponent,
     SoldComponent,
     DailogSoldComponent,
+    ChartreportComponent,
   ],
   imports: [
     BrowserModule,
@@ -74,7 +78,8 @@ import { DailogSoldComponent } from './dailog-sold/dailog-sold.component';
     HttpClientModule,
     FormsModule,
     BrowserAnimationsModule,
-    DynamicDialogModule
+    DynamicDialogModule,
+    ChartModule
 
   ],
   providers: [

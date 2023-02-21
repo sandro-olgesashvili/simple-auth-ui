@@ -13,3 +13,9 @@ export interface SoldUserList {
     productName: string,
     dateTime:Date
 }
+
+export interface SoldReport {
+    productName: string,
+    totalSales: number,
+    quantity: number
+}

@@ -1,0 +1,13 @@
+<div class="card">
+    <p-chart type="bar" [data]="stackedData" [options]="stackedOptions"  width="30vw" height="70vh"></p-chart>
+    <p-chart type="polarArea" [data]="data" [options]="chartOptions" width="30vw"></p-chart>
+</div>
+<p-button
+  (click)="goBack()"
+  class="admin-btn"
+  label="Admin"
+  type="p-button"
+  styleClass="p-button"
+></p-button>
+
+<h1 class="total">Total: {{total.toLocaleString()}} $</h1>

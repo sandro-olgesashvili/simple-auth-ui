@@ -139,4 +139,7 @@ export class AdminComponent implements OnInit {
   soldList() {
     this.route.navigate(['/sold'])
   }
+  report() {
+    this.route.navigate(['/chart'])
+  }
 }
