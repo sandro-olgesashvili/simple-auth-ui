@@ -11,6 +11,14 @@ import { ReportService } from '../service/report.service';
 export class ChartreportComponent implements OnInit {
   stackedData: any;
 
+  endDate: Date = new Date();
+
+  startDate: Date = new Date(
+    new Date().getFullYear(),
+    new Date().getMonth() - 1,
+    new Date().getDate()
+  );
+
   total: number = 0;
 
   stackedOptions: any;
@@ -22,39 +30,46 @@ export class ChartreportComponent implements OnInit {
   constructor(private reportService: ReportService, private router: Router) {}
 
   ngOnInit(): void {
-    this.reportService.getReport().subscribe((x) => {
-      x.forEach((item: SoldReport) => (this.total += item.totalSales));
-      this.stackedData = {
-        labels: x.map((item: SoldReport) => item.productName),
-        datasets: [
-          {
-            type: 'bar',
-            label: 'Quantity',
-            backgroundColor: '#42A5F5',
-            data: x.map((item: SoldReport) => item.quantity),
-          },
-        ],
-      };
+    this.getData();
+  }
 
-      this.data = {
-        datasets: [
-          {
-            data: x.map((item: SoldReport) => item.totalSales),
-            backgroundColor: [
-              '#42A5F5',
-              '#66BB6A',
-              '#FFA726',
-              '#26C6DA',
-              '#7E57C2',
-              '#008B8B',
-              '#ADFF2F'
-            ],
-            label: 'Total Sales',
-          },
-        ],
-        labels: x.map((item: any) => item.productName),
-      };
-    });
+  getData() {
+    this.reportService
+      .getReport(this.startDate, this.endDate)
+      .subscribe((x) => {
+        this.total = 0;
+        x.forEach((item: SoldReport) => (this.total += item.totalSales));
+        this.stackedData = {
+          labels: x.map((item: SoldReport) => item.productName),
+          datasets: [
+            {
+              type: 'bar',
+              label: 'Quantity',
+              backgroundColor: '#42A5F5',
+              data: x.map((item: SoldReport) => item.quantity),
+            },
+          ],
+        };
+
+        this.data = {
+          datasets: [
+            {
+              data: x.map((item: SoldReport) => item.totalSales),
+              backgroundColor: [
+                '#42A5F5',
+                '#66BB6A',
+                '#FFA726',
+                '#26C6DA',
+                '#7E57C2',
+                '#008B8B',
+                '#ADFF2F',
+              ],
+              label: 'Total Sales',
+            },
+          ],
+          labels: x.map((item: SoldReport) => item.productName),
+        };
+      });
 
     this.stackedOptions = {
       tooltips: {

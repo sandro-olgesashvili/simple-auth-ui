@@ -57,7 +57,7 @@
       <td>{{ product.voucherCode }}</td>
       <td>{{ product.price }} $</td>
       <td>{{ product.used === 1 ? "No" : product.used === 2 ? "Blocked" : "Yes" }}</td>
-      <td>{{ product.expireDate | date:"dd/MM/yy" }}</td>
+      <td>{{ product.expireDate | date:"dd/MM/yyyy" }}</td>
       <td>
         <button
           (click)="onDelete(product.voucherCode)"

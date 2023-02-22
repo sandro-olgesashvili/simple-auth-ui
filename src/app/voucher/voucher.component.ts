@@ -13,7 +13,7 @@ export class VoucherComponent implements OnInit {
 
   voucherArr: GetVoucher[] = [];
 
-  setDate!: Date;
+  setDate: Date = new Date();
 
   constructor(private voucherService: VoucherService, private router: Router) {}
 

@@ -8,9 +8,12 @@ import { Observable } from 'rxjs';
 export class ReportService {
   private reportUrl = 'https://localhost:7102/api/Reports';
 
+
+  private url2 = "https://localhost:7102/api/Reports/date?"
+
   constructor(private http: HttpClient) {}
 
-  getReport(): Observable<any> {
-    return this.http.get(this.reportUrl);
+  getReport(start:any, end:any): Observable<any> {
+    return this.http.get(`${this.url2}start=${start.toDateString()}&end=${end.toDateString()}`);
   }
 }
