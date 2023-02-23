@@ -61,7 +61,12 @@ export class AdminComponent implements OnInit {
   }
 
   onRowEditSave(product: AddProduct) {
-    if (product.price > 0) {
+    const arr = this.products1.filter((item) => item.id !== product.id);
+
+    if (
+      product.price > 0 &&
+      !arr.some((item) => item.productName === product.productName)
+    ) {
       delete this.clonedProducts[product.id!];
       this.messageService.add({
         severity: 'success',
@@ -70,10 +75,11 @@ export class AdminComponent implements OnInit {
       });
       this.authService.updateProd(product).subscribe();
     } else {
+      this.products2 = this.products1;
       this.messageService.add({
         severity: 'error',
         summary: 'Error',
-        detail: 'Invalid Price',
+        detail: 'Invalid',
       });
     }
   }
@@ -89,7 +95,7 @@ export class AdminComponent implements OnInit {
       .subscribe(
         (x) =>
           (this.products2 = this.products2.filter(
-            (x) => x.productName !== data.productName
+            (item) => item.id !== data.id
           ))
       );
   }
@@ -127,19 +133,21 @@ export class AdminComponent implements OnInit {
 
   onChange() {
     if (this.selectedUser !== null) {
-      this.products2 = this.products2.filter(x => x.authId === this.selectedUser.code)
+      this.products2 = this.products2.filter(
+        (x) => x.authId === this.selectedUser.code
+      );
     } else {
       this.products2 = this.products1;
     }
   }
 
   goBack() {
-    this.route.navigate(['/voucher'])
+    this.route.navigate(['/voucher']);
   }
   soldList() {
-    this.route.navigate(['/sold'])
+    this.route.navigate(['/sold']);
   }
   report() {
-    this.route.navigate(['/chart'])
+    this.route.navigate(['/chart']);
   }
 }

@@ -178,10 +178,11 @@ export class DashboardComponent implements OnInit, OnDestroy {
     }
   }
 
-  deleteProduct(data: string) {
+  deleteProduct(data: string, id?: number) {
+    console.log(id);
     this.authService.deleteProduct(data).subscribe((x) => {
       x
-        ? (this.prodArr = this.prodArr.filter((x) => x.productName !== data))
+        ? (this.prodArr = this.prodArr.filter((x) => x.id !== id))
         : this.prodArr;
     });
   }
@@ -220,12 +221,19 @@ export class DashboardComponent implements OnInit, OnDestroy {
         this.updateProdmsg = '';
       }, 2000);
     } else {
-      prod!.productName = this.sendData.productName;
-      prod!.price = this.sendData.price;
-      prod!.quantity = this.sendData.quantity;
-
-      this.authService.updateProd(data).subscribe((x) => console.log(x));
-      this.onOff = false;
+      this.authService.updateProd(data).subscribe((x) => {
+        if (x !== false) {
+          prod!.productName = this.sendData.productName;
+          prod!.price = this.sendData.price;
+          prod!.quantity = this.sendData.quantity;
+          this.onOff = false;
+        } else {
+          this.updateProdmsg = 'პროდუქტი უკვე არსებობს';
+          setTimeout(() => {
+            this.updateProdmsg = '';
+          }, 2000);
+        }
+      });
     }
   }
 

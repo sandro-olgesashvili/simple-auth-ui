@@ -11,7 +11,11 @@ import { ReportService } from '../service/report.service';
 export class ChartreportComponent implements OnInit {
   stackedData: any;
 
-  endDate: Date = new Date();
+  endDate: Date = new Date(
+    new Date().getFullYear(),
+    new Date().getMonth(),
+    new Date().getDate() + 1
+  );
 
   startDate: Date = new Date(
     new Date().getFullYear(),

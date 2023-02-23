@@ -11,7 +11,7 @@
     <div
       *ngFor="let item of prodArr"
       class="prduct-item"
-      (dblclick)="deleteProduct(item.productName)"
+      (dblclick)="deleteProduct(item.productName, item.id)"
     >
       <div>{{ item.productName }}</div>
       <div>{{ item.quantity }}</div>
