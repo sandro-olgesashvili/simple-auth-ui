@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
@@ -31,6 +31,11 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   ref!: DynamicDialogRef;
 
+  @ViewChild('fileUpload') fileUpload: any;
+
+  formData: FormData = new FormData();
+  formDataUpdate: FormData = new FormData();
+
   productName: string = '';
   quantity: number = 1;
   price: number = 1;
@@ -46,6 +51,10 @@ export class DashboardComponent implements OnInit, OnDestroy {
   updatemsg: string = '';
   updateProdmsg: string = '';
 
+  imageName: string = '';
+
+  imageFile: File | null = null;
+
   voucherCode: string = '';
 
   voucherBtn: string = '';
@@ -56,7 +65,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     price: 0,
   };
 
-  ls = JSON.parse(localStorage.getItem('user') || '');
+  ls = JSON.parse(localStorage.getItem('user')!);
 
   ngOnInit(): void {
     this.uiService.sendMess(true);
@@ -115,6 +124,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   addProduct(data: AddProduct) {
     const oa: OrderAdd = {
       productName: data.productName,
+      imageSrc: data.imageSrc,
     };
 
     let check: any = this.prodArr.find(
@@ -150,7 +160,12 @@ export class DashboardComponent implements OnInit, OnDestroy {
       quantity: this.quantity,
       price: this.price,
     };
-    if (!this.productName.trim() || this.quantity <= 0 || this.price <= 0) {
+    if (
+      !this.productName.trim() ||
+      this.quantity <= 0 ||
+      this.price <= 0 ||
+      this.imageFile === null
+    ) {
       this.messageAdd = 'შეავსეთ ყველა ველი';
       setTimeout(() => {
         this.messageAdd = '';
@@ -163,13 +178,20 @@ export class DashboardComponent implements OnInit, OnDestroy {
         (x) => x.productName.toLowerCase() === data.productName.toLowerCase()
       )
     ) {
-      this.authService.addProduct(data).subscribe((x) => {
+      this.formData.append('productName', this.productName);
+      this.formData.append('quantity', this.quantity.toString());
+      this.formData.append('price', this.price.toString());
+      this.formData.append('imageName', this.imageName!);
+
+      this.authService.addProduct(this.formData).subscribe((x) => {
         this.prodArr.push(x);
       });
 
+      this.fileUpload.clear();
       this.productName = '';
       this.quantity = 1;
       this.price = 1;
+      this.imageFile = null;
     } else {
       this.messageAdd = 'პროდუქტი უკვე დამატებულია';
       setTimeout(() => {
@@ -178,9 +200,11 @@ export class DashboardComponent implements OnInit, OnDestroy {
     }
   }
 
-  deleteProduct(data: string, id?: number) {
+  deleteProduct(data: string, id?: number, imageName?: string) {
     console.log(id);
-    this.authService.deleteProduct(data).subscribe((x) => {
+    let data2 = { productName: data, imageName: imageName };
+
+    this.authService.deleteProduct(data2).subscribe((x) => {
       x
         ? (this.prodArr = this.prodArr.filter((x) => x.id !== id))
         : this.prodArr;
@@ -215,18 +239,32 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
     const data: AddProduct = { ...this.sendData };
 
-    if (data.quantity <= 0 || data.price <= 0 || !data.productName.trim()) {
+    if (
+      data.quantity <= 0 ||
+      data.price <= 0 ||
+      !data.productName.trim() ||
+      this.imageFile === null
+    ) {
       this.updateProdmsg = 'შეავსეთ ყველა ველი';
       setTimeout(() => {
         this.updateProdmsg = '';
       }, 2000);
     } else {
-      this.authService.updateProd(data).subscribe((x) => {
+      this.formDataUpdate.append('productName', this.sendData.productName);
+      this.formDataUpdate.append('id', this.sendData.id?.toString()!);
+      this.formDataUpdate.append('quantity', this.sendData.quantity.toString());
+      this.formDataUpdate.append('price', this.sendData.price.toString());
+      this.formDataUpdate.append('imageName', this.imageName);
+
+      this.authService.updateProd(this.formDataUpdate).subscribe((x) => {
         if (x !== false) {
           prod!.productName = this.sendData.productName;
           prod!.price = this.sendData.price;
           prod!.quantity = this.sendData.quantity;
+          prod!.imageSrc = x.imageSrc;
           this.onOff = false;
+          this.formDataUpdate = new FormData();
+          this.fileUpload = null;
         } else {
           this.updateProdmsg = 'პროდუქტი უკვე არსებობს';
           setTimeout(() => {
@@ -319,6 +357,25 @@ export class DashboardComponent implements OnInit, OnDestroy {
     if (this.ref) {
       this.ref.close();
     }
+  }
+
+  myUploader(event: any) {
+    this.imageName = event.currentFiles[0].name;
+    this.formData.append('imageFile', event.currentFiles[0]);
+    this.imageFile = event.currentFiles[0];
+  }
+
+  myUpdate(event: any) {
+    this.imageName = event.currentFiles[0].name;
+    this.formDataUpdate.append('imageFile', event.currentFiles[0]);
+    this.imageFile = event.currentFiles[0];
+
+    console.log(this.imageName);
+    console.log(this.imageFile);
+  }
+
+  onClear(event: any) {
+    this.imageFile = null;
   }
 
   logout() {

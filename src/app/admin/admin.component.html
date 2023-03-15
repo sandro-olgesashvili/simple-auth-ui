@@ -15,6 +15,7 @@
         <th>Name</th>
         <th>Quantity</th>
         <th>Price</th>
+        <th>Image</th>
         <th style="width: 8rem"></th>
         <th style="width: 8rem">Delete</th>
       </tr>
@@ -72,6 +73,17 @@
             </ng-template>
           </p-cellEditor>
         </td>
+        <td>
+          <img
+            [src]="product.imageSrc"
+            [alt]="product.imageName"
+            width="80px"
+            height="80px"
+            style="border-radius: 10px; object-fit: cover"
+            class="shadow-4"
+          />
+        </td>
+
         <td style="text-align: center">
           <button
             *ngIf="!editing"
@@ -177,13 +189,39 @@
         />
       </div>
     </div>
-    <p-button
-      label="Add"
-      type="submit"
-      icon="pi pi-check"
-      styleClass="p-button"
-    ></p-button>
   </div>
+
+  <h2 class="input-title">Image</h2>
+  <p-fileUpload
+    name="imageFile"
+    accept="image/*"
+    [auto]="true"
+    [multiple]="false"
+    #fileUpload
+    [disabled]="addObj.imageFile !== null"
+    (onRemove)="onClear($event)"
+    (onSelect)="myUploader($event)"
+  ></p-fileUpload>
+
+  <h2 class="input-title">PDF</h2>
+  <p-fileUpload
+    name="imageFile"
+    accept="application/pdf"
+    [auto]="true"
+    [multiple]="false"
+    #fileUpload
+    [disabled]="addObj.imageFile !== null"
+    (onRemove)="onClear($event)"
+    (onSelect)="myUploader($event)"
+  ></p-fileUpload>
+
+  <p-button
+    class="btn-acc"
+    label="Add"
+    type="submit"
+    icon="pi pi-check"
+    styleClass="p-button"
+  ></p-button>
 </form>
 
 <p-button

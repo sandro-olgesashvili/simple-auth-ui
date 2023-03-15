@@ -54,7 +54,7 @@
 
 .prduct-item img {
   position: absolute;
-  right: -59px;
+  right: -54px;
   bottom: 0;
   background-color: #fff;
   padding: 17.5px 22px;
@@ -66,6 +66,7 @@
 .prduct-item div:first-child {
   flex: 1;
   padding: 18px 16px;
+  position: relative;
 }
 
 .prduct-item div:nth-child(2) {
@@ -241,6 +242,7 @@
 }
 
 .product-btn-cont {
+  margin-top: 20px;
   text-align: center;
 }
 input::-webkit-outer-spin-button,
@@ -347,11 +349,9 @@ input[type="number"] {
   padding-block: 10px;
 }
 
-
 .voucher-form {
   padding-block: 10px;
 }
-
 
 .voucher-form form {
   display: flex;
@@ -370,5 +370,24 @@ input[type="number"] {
 .show-btn {
   position: absolute;
   left: 100px;
-  top:23px;
+  top: 23px;
+}
+
+.img-file {
+  position: absolute !important;
+  padding: 0 !important;
+  border-radius: 5px !important;
+  object-fit: cover;
+  width: 40px;
+  height: 40px;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.order-img {
+  object-fit: cover;
+  width: 50px !important;
+  height: 50px !important;
+  border-radius: 5px;
 }

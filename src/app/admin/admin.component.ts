@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { MessageService, SelectItem } from 'primeng/api';
 import { AddProduct, User } from '../interface/add-product';
@@ -21,17 +21,24 @@ import { AuthService } from '../service/auth.service';
 export class AdminComponent implements OnInit {
   products1!: AddProduct[];
 
+  @ViewChild('fileUpload') fileUpload: any;
+
   products2!: AddProduct[];
 
   usersArr: User[] = [];
+
   selectedUser!: User;
 
   statuses!: SelectItem[];
+
+  formData: FormData = new FormData();
 
   addObj: AddProduct = {
     productName: '',
     quantity: 0,
     price: 0,
+    imageName: '',
+    imageFile: null,
   };
 
   clonedProducts: { [s: string]: AddProduct } = {};
@@ -43,7 +50,10 @@ export class AdminComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.authService.getProd().subscribe((x) => (this.products1 = x));
+    this.authService.getProd().subscribe((x) => {
+      this.products1 = x;
+      console.log(x);
+    });
     this.authService.getProd().subscribe((x) => (this.products2 = x));
     this.authService.getUsers().subscribe((x) => {
       this.usersArr = x;
@@ -90,8 +100,9 @@ export class AdminComponent implements OnInit {
   }
 
   deleteProd(data: AddProduct) {
+    let data2 = { productName: data.productName, imageName: data.imageName };
     this.authService
-      .deleteProduct(data.productName)
+      .deleteProduct(data2)
       .subscribe(
         (x) =>
           (this.products2 = this.products2.filter(
@@ -104,19 +115,30 @@ export class AdminComponent implements OnInit {
     if (
       this.addObj.productName.trim() &&
       this.addObj.price > 0 &&
-      this.addObj.quantity > 0
+      this.addObj.quantity > 0 &&
+      this.addObj.imageFile !== null
     ) {
+      this.formData.append('productName', this.addObj.productName);
+      this.formData.append('quantity', this.addObj.quantity.toString());
+      this.formData.append('price', this.addObj.price.toString());
+      this.formData.append('imageName', this.addObj.imageName!);
+
+      this.authService
+        .addProduct(this.formData)
+        .subscribe((x) => this.products2.push(x));
+
       this.messageService.add({
         severity: 'success',
         summary: 'Success',
         detail: 'პროდუქტუ დამატებულია',
       });
-      this.authService
-        .addProduct(this.addObj)
-        .subscribe((x) => this.products2.push(x));
+
+      this.fileUpload.clear();
       this.addObj.productName = '';
       this.addObj.price = 0;
       this.addObj.quantity = 0;
+      this.addObj.imageFile = null;
+      this.formData = new FormData();
     } else {
       this.messageService.add({
         severity: 'error',
@@ -124,6 +146,16 @@ export class AdminComponent implements OnInit {
         detail: 'შეავსეთ ყველა ველი',
       });
     }
+  }
+
+  myUploader(event: any) {
+    this.addObj.imageName = event.currentFiles[0].name;
+    this.formData.append('imageFile', event.currentFiles[0]);
+    this.addObj.imageFile = event.currentFiles[0];
+
+    console.log(this.addObj);
+
+    console.log(this.addObj.imageFile);
   }
 
   logout() {
@@ -139,6 +171,10 @@ export class AdminComponent implements OnInit {
     } else {
       this.products2 = this.products1;
     }
+  }
+
+  onClear(event: any) {
+    this.addObj.imageFile = null;
   }
 
   goBack() {

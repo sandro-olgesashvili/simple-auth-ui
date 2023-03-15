@@ -28,7 +28,7 @@ export class AuthService {
 
   private updateProdUrl = 'https://localhost:7102/api/auth/update';
 
-  private getUsersUrl = "https://localhost:7102/api/auth/users"
+  private getUsersUrl = 'https://localhost:7102/api/auth/users';
 
   httpHeader = new HttpHeaders({
     'Content-Type': 'application/json',
@@ -63,7 +63,7 @@ export class AuthService {
     return this.http.post(this.getORderUrl, data);
   }
 
-  addProduct(data: AddProduct): Observable<any> {
+  addProduct(data: any): Observable<any> {
     return this.http.post(this.addProductUrl, data);
   }
 
@@ -71,19 +71,24 @@ export class AuthService {
     return this.http.delete(`${this.orderDelUrl}${data.productName}`);
   }
 
-  deleteProduct(data: string): Observable<any> {
-    return this.http.delete(`${this.deleteProductUrl}${data}`);
+  deleteProduct(data: {
+    productName: string;
+    imageName: string | undefined;
+  }): Observable<any> {
+    return this.http.delete(
+      `https://localhost:7102/api/auth/products?ProductName=${data.productName}&ImageName=${data.imageName}`
+    );
   }
 
   updateSave(data: ProductMain[]): Observable<any> {
     return this.http.patch(this.saveChange, data);
   }
 
-  updateProd(data: AddProduct): Observable<any> {
+  updateProd(data: AddProduct | FormData): Observable<any> {
     return this.http.patch(this.updateProdUrl, data);
   }
 
-  getUsers():Observable<any> {
-    return this.http.get(this.getUsersUrl)
+  getUsers(): Observable<any> {
+    return this.http.get(this.getUsersUrl);
   }
 }

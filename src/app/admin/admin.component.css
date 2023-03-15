@@ -137,3 +137,20 @@
 .third {
   left: 350px;
 }
+form {
+  padding-block: 50px;
+}
+
+.btn-acc {
+  padding-top: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.input-title {
+  padding-left: 50px;
+  padding-top: 10px;
+  padding-bottom: 30px;
+  font-weight: normal;
+}

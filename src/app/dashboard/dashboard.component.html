@@ -11,9 +11,12 @@
     <div
       *ngFor="let item of prodArr"
       class="prduct-item"
-      (dblclick)="deleteProduct(item.productName, item.id)"
+      (dblclick)="deleteProduct(item.productName, item.id, item.productName)"
     >
-      <div>{{ item.productName }}</div>
+      <div>
+        {{ item.productName }}
+        <img [src]="item.imageSrc" alt="img" class="img-file" />
+      </div>
       <div>{{ item.quantity }}</div>
       <div>{{ item.price }} $</div>
       <img
@@ -53,8 +56,17 @@
             name="price"
           />
         </div>
+        <p-fileUpload
+          name="imageFile"
+          accept="image/*"
+          [auto]="true"
+          [multiple]="false"
+          #fileUpload
+          (onSelect)="myUploader($event)"
+        ></p-fileUpload>
+
         <div class="product-btn-cont">
-          <button class="product-btn" type="submit">დამატებ</button>
+          <button class="product-btn" type="submit">დამატება</button>
         </div>
       </form>
       <h2 class="warng-msg">{{ messageAdd }}</h2>
@@ -89,6 +101,7 @@
           <div>{{ item.price }} $</div>
           <div>{{ item.price * item.quantity }}$</div>
         </div>
+        <img [src]="item.imageSrc" alt="a" class="order-img" />
         <div class="voucher-btn" *ngIf="voucherBtn !== item.productName">
           <p-button
             (click)="onVoucher(item.productName)"
@@ -166,13 +179,27 @@
           name="price"
         />
       </div>
+      <p-fileUpload
+        [disabled]="imageFile !== null"
+        (onRemove)="onClear($event)"
+        name="imageFile"
+        accept="image/*"
+        [auto]="true"
+        [multiple]="false"
+        #fileUpload
+        (onSelect)="myUpdate($event)"
+      ></p-fileUpload>
+
       <button class="update-btn-pr" type="submit">განახლება</button>
       <h2 class="warng-msg">{{ updateProdmsg }}</h2>
     </form>
   </div>
 </div>
 
-
-<button type="button" (click)="show()" pButton icon="pi pi-shopping-cart" class="show-btn"></button>
-
-
+<button
+  type="button"
+  (click)="show()"
+  pButton
+  icon="pi pi-shopping-cart"
+  class="show-btn"
+></button>

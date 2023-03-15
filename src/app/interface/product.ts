@@ -5,4 +5,5 @@ export interface ProductMain {
   price: number;
   authId: number;
   productId: number;
+  imageSrc?: string;
 }

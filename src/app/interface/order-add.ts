@@ -1,3 +1,4 @@
 export interface OrderAdd {
-    productName: string
+  productName: string;
+  imageSrc?: string;
 }
