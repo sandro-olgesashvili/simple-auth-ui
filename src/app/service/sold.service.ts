@@ -1,41 +1,43 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class SoldService {
+  httpHeader = new HttpHeaders({
+    'Content-Type': 'application/json',
+  });
+  private soldUrl = 'https://localhost:7102/api/SoldProduct';
 
-  private soldUrl = "https://localhost:7102/api/SoldProduct";
+  private soldDelUrl = 'https://localhost:7102/api/SoldProduct?id=';
 
-  private soldDelUrl = "https://localhost:7102/api/SoldProduct?id="
+  private soldUserUrl = 'https://localhost:7102/api/SoldProduct/user';
 
-  private soldUserUrl = "https://localhost:7102/api/SoldProduct/user"
+  private soldUserDelUrl = 'https://localhost:7102/api/SoldProduct/user?id=';
 
-  private soldUserDelUrl = "https://localhost:7102/api/SoldProduct/user?id="
+  constructor(private http: HttpClient) {}
 
-  constructor(private http:HttpClient) { }
-
-  getSoldProduct():Observable<any> {
+  getSoldProduct(): Observable<any> {
     return this.http.get(this.soldUrl);
   }
 
-  delSoldProduct(id:number):Observable<any> {
-    return this.http.delete(`${this.soldDelUrl}${id}`)
+  delSoldProduct(id: number): Observable<any> {
+    return this.http.delete(`${this.soldDelUrl}${id}`);
   }
 
-  buyProduct():Observable<any> {
-    return this.http.post(this.soldDelUrl, 'payload');
+  buyProduct(): Observable<any> {
+    return this.http.post(this.soldUrl, 'payload', {
+      headers: this.httpHeader,
+    });
   }
 
-  getSoldListUser():Observable<any> {
-    return this.http.get(this.soldUserUrl)
+  getSoldListUser(): Observable<any> {
+    return this.http.get(this.soldUserUrl);
   }
 
-  delSoldItemUser(id:number):Observable<any> {
-    return this.http.delete(`${this.soldUserDelUrl}${id}`)
+  delSoldItemUser(id: number): Observable<any> {
+    return this.http.delete(`${this.soldUserDelUrl}${id}`);
   }
-
-  
 }

@@ -11,11 +11,14 @@
     <div
       *ngFor="let item of prodArr"
       class="prduct-item"
-      (dblclick)="deleteProduct(item.productName, item.id, item.productName)"
+      (dblclick)="
+        deleteProduct(item.productName, item.id, item.productName, item.pdfName)
+      "
     >
       <div>
         {{ item.productName }}
         <img [src]="item.imageSrc" alt="img" class="img-file" />
+        <a [href]="item.pdfSrc" target="_blank" class="pdf-custome">PDF File</a>
       </div>
       <div>{{ item.quantity }}</div>
       <div>{{ item.price }} $</div>
@@ -56,13 +59,28 @@
             name="price"
           />
         </div>
+        <h2 class="title-file">Image</h2>
         <p-fileUpload
           name="imageFile"
           accept="image/*"
+          [disabled]="imageFile !== null"
           [auto]="true"
           [multiple]="false"
           #fileUpload
+          (onRemove)="onClear($event)"
           (onSelect)="myUploader($event)"
+        ></p-fileUpload>
+
+        <h2 class="title-file">PDF</h2>
+        <p-fileUpload
+          name="pdfFile"
+          accept="application/pdf"
+          [disabled]="pdfFile !== null"
+          [auto]="true"
+          [multiple]="false"
+          #fileUploadPdf
+          (onRemove)="onClearPdf($event)"
+          (onSelect)="myUploaderPdf($event)"
         ></p-fileUpload>
 
         <div class="product-btn-cont">
@@ -179,15 +197,29 @@
           name="price"
         />
       </div>
+
+      <h2 class="title-file-up">Image</h2>
       <p-fileUpload
-        [disabled]="imageFile !== null"
-        (onRemove)="onClear($event)"
         name="imageFile"
         accept="image/*"
+        [disabled]="imageFile !== null"
         [auto]="true"
         [multiple]="false"
         #fileUpload
+        (onRemove)="onClear($event)"
         (onSelect)="myUpdate($event)"
+      ></p-fileUpload>
+
+      <h2 class="title-file-up">PDF</h2>
+      <p-fileUpload
+        name="pdfFile"
+        accept="application/pdf"
+        [disabled]="pdfFile !== null"
+        [auto]="true"
+        [multiple]="false"
+        #fileUploadPdf
+        (onRemove)="onClearPdf($event)"
+        (onSelect)="myUpdatePdf($event)"
       ></p-fileUpload>
 
       <button class="update-btn-pr" type="submit">განახლება</button>

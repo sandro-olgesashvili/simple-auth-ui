@@ -74,9 +74,10 @@ export class AuthService {
   deleteProduct(data: {
     productName: string;
     imageName: string | undefined;
+    pdfName: string | undefined;
   }): Observable<any> {
     return this.http.delete(
-      `https://localhost:7102/api/auth/products?ProductName=${data.productName}&ImageName=${data.imageName}`
+      `https://localhost:7102/api/auth/products?ProductName=${data.productName}&ImageName=${data.imageName}&PdfName=${data.pdfName}`
     );
   }
 

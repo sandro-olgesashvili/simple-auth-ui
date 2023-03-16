@@ -276,6 +276,8 @@ input::-webkit-inner-spin-button {
 }
 
 .container-update {
+  max-height: 80vh;
+  overflow: auto;
   position: fixed;
   left: 50%;
   top: 50%;
@@ -390,4 +392,23 @@ input[type="number"] {
   width: 50px !important;
   height: 50px !important;
   border-radius: 5px;
+}
+.title-file {
+  font-weight: normal;
+  margin-block: 20px;
+}
+
+.title-file-up {
+  font-weight: normal;
+  margin-block: 10px;
+  font-size: 12px;
+}
+
+.pdf-custome {
+  position: absolute;
+  top: 50%;
+  left: 80%;
+  transform: translate(-50%, -50%);
+  color: black;
+  text-decoration: underline;
 }

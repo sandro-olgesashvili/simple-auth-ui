@@ -7,6 +7,9 @@ export interface AddProduct {
   imageName?: string;
   imageSrc?: string;
   imageFile?: File | null;
+  pdfName?: string;
+  pdfSrc?: string;
+  pdfFile?: File | null;
 }
 export interface User {
   name: string;

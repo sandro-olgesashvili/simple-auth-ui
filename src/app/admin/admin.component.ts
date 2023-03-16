@@ -22,6 +22,7 @@ export class AdminComponent implements OnInit {
   products1!: AddProduct[];
 
   @ViewChild('fileUpload') fileUpload: any;
+  @ViewChild('fileUploadPdf') fileUploadPdf: any;
 
   products2!: AddProduct[];
 
@@ -39,6 +40,8 @@ export class AdminComponent implements OnInit {
     price: 0,
     imageName: '',
     imageFile: null,
+    pdfName: '',
+    pdfFile: null,
   };
 
   clonedProducts: { [s: string]: AddProduct } = {};
@@ -100,7 +103,11 @@ export class AdminComponent implements OnInit {
   }
 
   deleteProd(data: AddProduct) {
-    let data2 = { productName: data.productName, imageName: data.imageName };
+    let data2 = {
+      productName: data.productName,
+      imageName: data.imageName,
+      pdfName: data.pdfName!,
+    };
     this.authService
       .deleteProduct(data2)
       .subscribe(
@@ -116,12 +123,14 @@ export class AdminComponent implements OnInit {
       this.addObj.productName.trim() &&
       this.addObj.price > 0 &&
       this.addObj.quantity > 0 &&
-      this.addObj.imageFile !== null
+      this.addObj.imageFile !== null &&
+      this.addObj.pdfFile !== null
     ) {
       this.formData.append('productName', this.addObj.productName);
       this.formData.append('quantity', this.addObj.quantity.toString());
       this.formData.append('price', this.addObj.price.toString());
       this.formData.append('imageName', this.addObj.imageName!);
+      this.formData.append('pdfName', this.addObj.pdfName!);
 
       this.authService
         .addProduct(this.formData)
@@ -134,10 +143,12 @@ export class AdminComponent implements OnInit {
       });
 
       this.fileUpload.clear();
+      this.fileUploadPdf.clear();
       this.addObj.productName = '';
       this.addObj.price = 0;
       this.addObj.quantity = 0;
       this.addObj.imageFile = null;
+      this.addObj.pdfFile = null;
       this.formData = new FormData();
     } else {
       this.messageService.add({
@@ -158,6 +169,16 @@ export class AdminComponent implements OnInit {
     console.log(this.addObj.imageFile);
   }
 
+  myUploaderPdf(event: any) {
+    this.addObj.pdfName = event.currentFiles[0].name;
+    this.formData.append('pdfFile', event.currentFiles[0]);
+    this.addObj.pdfFile = event.currentFiles[0];
+
+    console.log(this.addObj);
+
+    console.log(this.addObj.pdfFile);
+  }
+
   logout() {
     localStorage.removeItem('user');
     this.route.navigate(['/']);
@@ -174,7 +195,14 @@ export class AdminComponent implements OnInit {
   }
 
   onClear(event: any) {
+    event = null;
+    this.formData = new FormData();
     this.addObj.imageFile = null;
+  }
+  onClearPdf(event: any) {
+    event = null;
+    this.formData = new FormData();
+    this.addObj.pdfFile = null;
   }
 
   goBack() {

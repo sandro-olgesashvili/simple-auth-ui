@@ -32,6 +32,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   ref!: DynamicDialogRef;
 
   @ViewChild('fileUpload') fileUpload: any;
+  @ViewChild('fileUploadPdf') fileUploadPdf: any;
 
   formData: FormData = new FormData();
   formDataUpdate: FormData = new FormData();
@@ -52,8 +53,10 @@ export class DashboardComponent implements OnInit, OnDestroy {
   updateProdmsg: string = '';
 
   imageName: string = '';
+  pdfName: string = '';
 
   imageFile: File | null = null;
+  pdfFile: File | null = null;
 
   voucherCode: string = '';
 
@@ -125,6 +128,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     const oa: OrderAdd = {
       productName: data.productName,
       imageSrc: data.imageSrc,
+      pdfSrc: data.pdfSrc,
     };
 
     let check: any = this.prodArr.find(
@@ -164,7 +168,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
       !this.productName.trim() ||
       this.quantity <= 0 ||
       this.price <= 0 ||
-      this.imageFile === null
+      this.imageFile === null ||
+      this.pdfFile === null
     ) {
       this.messageAdd = 'შეავსეთ ყველა ველი';
       setTimeout(() => {
@@ -188,10 +193,13 @@ export class DashboardComponent implements OnInit, OnDestroy {
       });
 
       this.fileUpload.clear();
+      this.fileUploadPdf.clear();
       this.productName = '';
       this.quantity = 1;
       this.price = 1;
       this.imageFile = null;
+      this.pdfFile = null;
+      this.formData = new FormData();
     } else {
       this.messageAdd = 'პროდუქტი უკვე დამატებულია';
       setTimeout(() => {
@@ -200,9 +208,14 @@ export class DashboardComponent implements OnInit, OnDestroy {
     }
   }
 
-  deleteProduct(data: string, id?: number, imageName?: string) {
+  deleteProduct(
+    data: string,
+    id?: number,
+    imageName?: string,
+    pdfName?: string
+  ) {
     console.log(id);
-    let data2 = { productName: data, imageName: imageName };
+    let data2 = { productName: data, imageName: imageName, pdfName: pdfName };
 
     this.authService.deleteProduct(data2).subscribe((x) => {
       x
@@ -243,7 +256,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
       data.quantity <= 0 ||
       data.price <= 0 ||
       !data.productName.trim() ||
-      this.imageFile === null
+      this.imageFile === null ||
+      this.pdfFile === null
     ) {
       this.updateProdmsg = 'შეავსეთ ყველა ველი';
       setTimeout(() => {
@@ -255,6 +269,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
       this.formDataUpdate.append('quantity', this.sendData.quantity.toString());
       this.formDataUpdate.append('price', this.sendData.price.toString());
       this.formDataUpdate.append('imageName', this.imageName);
+      this.formDataUpdate.append('pdfName', this.pdfName);
 
       this.authService.updateProd(this.formDataUpdate).subscribe((x) => {
         if (x !== false) {
@@ -264,8 +279,10 @@ export class DashboardComponent implements OnInit, OnDestroy {
           prod!.imageSrc = x.imageSrc;
           this.onOff = false;
           this.formDataUpdate = new FormData();
+          this.formData = new FormData();
           this.fileUpload = null;
         } else {
+          console.log(x);
           this.updateProdmsg = 'პროდუქტი უკვე არსებობს';
           setTimeout(() => {
             this.updateProdmsg = '';
@@ -364,6 +381,13 @@ export class DashboardComponent implements OnInit, OnDestroy {
     this.formData.append('imageFile', event.currentFiles[0]);
     this.imageFile = event.currentFiles[0];
   }
+  myUploaderPdf(event: any) {
+    this.pdfName = event.currentFiles[0].name;
+    this.formData.append('pdfFile', event.currentFiles[0]);
+    this.pdfFile = event.currentFiles[0];
+
+    console.log(this.pdfName);
+  }
 
   myUpdate(event: any) {
     this.imageName = event.currentFiles[0].name;
@@ -374,8 +398,27 @@ export class DashboardComponent implements OnInit, OnDestroy {
     console.log(this.imageFile);
   }
 
+  myUpdatePdf(event: any) {
+    this.pdfName = event.currentFiles[0].name;
+    this.formDataUpdate.append('pdfFile', event.currentFiles[0]);
+    this.pdfFile = event.currentFiles[0];
+
+    console.log(this.pdfName);
+  }
+
   onClear(event: any) {
+    event = null;
+
+    this.formDataUpdate = new FormData();
+    this.formData = new FormData();
     this.imageFile = null;
+  }
+
+  onClearPdf(event: any) {
+    event = null;
+    this.formDataUpdate = new FormData();
+    this.formData = new FormData();
+    this.pdfFile = null;
   }
 
   logout() {

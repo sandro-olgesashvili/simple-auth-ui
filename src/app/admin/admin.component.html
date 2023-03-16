@@ -16,6 +16,7 @@
         <th>Quantity</th>
         <th>Price</th>
         <th>Image</th>
+        <th>PDF</th>
         <th style="width: 8rem"></th>
         <th style="width: 8rem">Delete</th>
       </tr>
@@ -82,6 +83,12 @@
             style="border-radius: 10px; object-fit: cover"
             class="shadow-4"
           />
+        </td>
+
+        <td>
+          <a [href]="product.pdfSrc" target="_blank" class="pdf-custome"
+            >PDF File</a
+          >
         </td>
 
         <td style="text-align: center">
@@ -205,14 +212,14 @@
 
   <h2 class="input-title">PDF</h2>
   <p-fileUpload
-    name="imageFile"
+    name="pdfFile"
     accept="application/pdf"
     [auto]="true"
     [multiple]="false"
-    #fileUpload
-    [disabled]="addObj.imageFile !== null"
-    (onRemove)="onClear($event)"
-    (onSelect)="myUploader($event)"
+    #fileUploadPdf
+    [disabled]="addObj.pdfFile !== null"
+    (onRemove)="onClearPdf($event)"
+    (onSelect)="myUploaderPdf($event)"
   ></p-fileUpload>
 
   <p-button
